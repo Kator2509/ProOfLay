@@ -3,8 +3,7 @@ X-min: 100
 Z-max: 1000
 Z-min: 100
 #Block list of world's
-BlockWorld:
-  - nether
-  - end
+#Type name of the world in your folder server
+BlockWorld: [world_nether, world_the_end]
 #Block list for block's
 BlockListIgnored:
