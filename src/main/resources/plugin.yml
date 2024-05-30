@@ -1,0 +1,12 @@
+name: PoL-SF
+version: '${project.version}'
+main: org.pptf.pol_sf.PoL_SF
+api-version: '1.20'
+prefix: 'PoL-SF'
+commands:
+  rtp:
+    description: Random teleport in the world
+    default: op
+    permission: PoL.rtp
+    usage: /rtp [PLAYER]
+    permission-message: You don't have a permission.
