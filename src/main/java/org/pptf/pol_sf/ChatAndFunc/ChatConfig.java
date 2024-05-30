@@ -9,7 +9,7 @@ import java.io.File;
 public class ChatConfig
 {
     private static FileConfiguration chatCFG;
-    private static File chatFile, chatPath;
+    private static File chatFile;
     public void loadChatCFG(Plugin plugin)
     {
         chatFile = new File(plugin.getDataFolder(), "Chat/ChatCFG.yml");

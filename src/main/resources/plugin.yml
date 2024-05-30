@@ -8,5 +8,11 @@ commands:
     description: Random teleport in the world
     default: op
     permission: PoL.rtp
+    usage: /rtp
+    permission-message: You don't have a permission.
+  rtp-Player:
+    description: Random teleport a player
+    default: op
     usage: /rtp [PLAYER]
+    permission: PoL.rtpPlayer
     permission-message: You don't have a permission.

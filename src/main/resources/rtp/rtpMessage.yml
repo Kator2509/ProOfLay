@@ -1,2 +1,5 @@
-IfSenderConsole: "This command only for Player or type Player name for teleport. 
+IfSenderConsole: "&cThis command only for Player or type Player name for teleport. 
 Example /rtp [PLAYER]"
+TryTeleportedInBlockWorld: "&cYou can't teleported there."
+TeleportedMessage: "&3You teleported at"
+PlayerOffline: "&cPlayer don't found, maybe offline."
