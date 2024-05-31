@@ -101,7 +101,6 @@ public class RandomTeleport implements CommandExecutor {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', (String) Objects.requireNonNull(getRtpMessage().get("DontHavePermission"))));
                 return true;
             }
-
         return false;
     }
 }

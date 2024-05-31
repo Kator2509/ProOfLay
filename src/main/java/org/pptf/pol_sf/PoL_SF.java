@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.pptf.pol_sf.ChatAndFunc.ChatConfig;
 import org.pptf.pol_sf.ChatAndFunc.ChatMessanger;
 import org.pptf.pol_sf.ChatAndFunc.RandomTeleport;
+import org.pptf.pol_sf.JoinAndLeaveEvent.Join;
 
 import java.util.Objects;
 
@@ -21,6 +22,7 @@ public final class PoL_SF extends JavaPlugin implements Listener {
     public void onEnable() {
         cfg.addDefault("ChatModule", true);
         cfg.addDefault("RandomTeleport", true);
+        cfg.addDefault("JoinMessage", true);
         cfg.options().copyDefaults(true);
         saveConfig();
         getConfig().options().copyDefaults(true);
@@ -39,6 +41,12 @@ public final class PoL_SF extends JavaPlugin implements Listener {
             Objects.requireNonNull(this.getCommand("rtp")).setExecutor(new RandomTeleport());
             rtpCFG.rtpCFG = getConfig();
             Bukkit.getConsoleSender().sendMessage("§b| PoL-SF rtp load.");
+        }
+        if(cfg.getBoolean("JoinMessage"))
+        {
+            Join join = new Join();
+            join.loadJoin(this);
+            this.getServer().getPluginManager().registerEvents(new Join(), this);
         }
         this.getServer().getPluginManager().registerEvents(this, this);
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "| PoL-SF Start.");

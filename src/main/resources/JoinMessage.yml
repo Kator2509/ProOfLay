@@ -1,0 +1,9 @@
+#Permission
+#JoinMessage.player
+#JoinMessage.admin
+JoinMessage:
+  player: ""
+  admin: ""
+LeaveMessage:
+  player: ""
+  admin: ""
