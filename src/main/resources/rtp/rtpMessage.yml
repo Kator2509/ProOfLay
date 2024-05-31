@@ -1,6 +1,7 @@
 IfSenderConsole: "&cThis command only for Player or type Player name for teleport. 
 Example /rtp [PLAYER]"
 TryTeleportedInBlockWorld: "&cYou can't teleported there."
-TeleportedMessage: "&3You teleported at X - %X%, Z - %Z%"
-PlayerOffline: "&cPlayer %PLAYER% don't found, maybe offline."
+#Parm %X and %Z only for this message.
+TeleportedMessage: "&3You teleported at X - %X, Z - %Z"
+PlayerOffline: "&cPlayer %PLAYER don't found, maybe offline."
 DontHavePermission: "&cYou don't have a permission."

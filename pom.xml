@@ -6,7 +6,7 @@
 
     <groupId>org.pptf</groupId>         <!--Players Play To Fun-->
     <artifactId>PoL_SF</artifactId>     <!--Protect of Layer-->
-    <version>1.0</version>
+    <version>1.1</version>
     <packaging>jar</packaging>
 
     <name>PoL-SF</name>
@@ -23,7 +23,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.3.0</version>
                 <configuration>
-                    <outputDirectory>C:\Users\kirill\Desktop\Test Server1201\plugins</outputDirectory>
+                    <outputDirectory>/home/kirill/Spigot1201/plugins</outputDirectory>
                 </configuration>
             </plugin>
             <plugin>

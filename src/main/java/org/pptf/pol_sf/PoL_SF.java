@@ -47,6 +47,8 @@ public final class PoL_SF extends JavaPlugin implements Listener {
             Join join = new Join();
             join.loadJoin(this);
             this.getServer().getPluginManager().registerEvents(new Join(), this);
+            join.joinMSG = getConfig();
+            Bukkit.getConsoleSender().sendMessage("§b| PoL-SF Join and Quit load.");
         }
         this.getServer().getPluginManager().registerEvents(this, this);
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "| PoL-SF Start.");

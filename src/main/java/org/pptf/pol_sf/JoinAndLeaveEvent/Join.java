@@ -35,12 +35,12 @@ public class Join implements Listener
     @EventHandler
     public void onJoin(PlayerJoinEvent event)
     {
-
+        Player player = event.getPlayer();
     }
 
     @EventHandler
     public void onLeave(PlayerQuitEvent event)
     {
-
+        Player player = event.getPlayer();
     }
 }

@@ -49,20 +49,25 @@ public class RandomTeleport implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
             if (sender instanceof Player && args.length == 0) {
                 if (sender.hasPermission("PoL.rtp")) {
-                    int X = random.nextInt(getRtpCFG().getInt("X-min"), getRtpCFG().getInt("X-max")),
-                            Z = random.nextInt(getRtpCFG().getInt("Z-min"), getRtpCFG().getInt("Z-max"));
                     World worldSender = ((Player) sender).getWorld();
                     if (!getRtpCFG().getStringList("BlockWorld").contains(worldSender.getName())) {
+                        int X = random.nextInt(getRtpCFG().getInt("X-min"), getRtpCFG().getInt("X-max")),
+                                Z = random.nextInt(getRtpCFG().getInt("Z-min"), getRtpCFG().getInt("Z-max"));
                         Block block = worldSender.getHighestBlockAt(X, Z);
                         int Y = block.getY() + 1;
                         if (!getRtpCFG().getStringList("BlockListIgnored").contains(block)) {
                             ((Player) sender).teleport(new Location(worldSender, X, Y, Z));
-                            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(getRtpMessage().get("TeleportedMessage")) + "X - " + X + ", Z - " + Z));
-                            System.out.println(worldSender.getName());
+                            sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                    Objects.requireNonNull(getRtpMessage().get("TeleportedMessage").toString()
+                                            .replace("%X", String.valueOf(X))
+                                            .replace("%Z", String.valueOf(Z))
+                                            .replace("%SENDER", sender.getName()))));
                             return true;
                         }
                     } else {
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', (String) Objects.requireNonNull(getRtpMessage().get("TryTeleportedInBlockWorld"))));
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                Objects.requireNonNull(getRtpMessage().get("TryTeleportedInBlockWorld").toString()
+                                        .replace("%SENDER", sender.getName()))));
                         return true;
                     }
                 }
@@ -70,35 +75,49 @@ public class RandomTeleport implements CommandExecutor {
                 Player player = Bukkit.getPlayer(args[0]);
                 try {
                     if (Objects.requireNonNull(player).isOnline()) {
-                        int X = random.nextInt(getRtpCFG().getInt("X-min"), getRtpCFG().getInt("X-max")),
-                                Z = random.nextInt(getRtpCFG().getInt("Z-min"), getRtpCFG().getInt("Z-max"));
                         World worldSender = player.getWorld();
                         if (!getRtpCFG().getStringList("BlockWorld").contains(worldSender.getName())) {
+                            int X = random.nextInt(getRtpCFG().getInt("X-min"), getRtpCFG().getInt("X-max")),
+                                    Z = random.nextInt(getRtpCFG().getInt("Z-min"), getRtpCFG().getInt("Z-max"));
                             Block block = worldSender.getHighestBlockAt(X, Z);
                             int Y = block.getY() + 1;
                             if (!getRtpCFG().getStringList("BlockListIgnored").contains(block)) {
                                 player.teleport(new Location(worldSender, X, Y, Z));
-                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(getRtpMessage().get("TeleportedMessage")) + "X - " + X + ", Z - " + Z));
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                        Objects.requireNonNull(getRtpMessage().get("TeleportedMessage").toString()
+                                                .replace("%X", String.valueOf(X))
+                                                .replace("%Z", String.valueOf(Z))
+                                                .replace("%PLAYER", player.getName())
+                                                .replace("%SENDER", sender.getName()))));
                                 return true;
                             }
                         } else {
-                            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', (String) Objects.requireNonNull(getRtpMessage().get("TryTeleportedInBlockWorld"))));
+                            sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                    Objects.requireNonNull(getRtpMessage().get("TryTeleportedInBlockWorld").toString()
+                                            .replace("%PLAYER", player.getName())
+                                            .replace("%SENDER", sender.getName()))));
                             return true;
                         }
                     }
                 } catch (NullPointerException e) {
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', (String) Objects.requireNonNull(getRtpMessage().get("PlayerOffline"))));
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                            Objects.requireNonNull(getRtpMessage().get("PlayerOffline").toString()
+                                    .replace("%PLAYER", args[0])
+                                    .replace("%SENDER", sender.getName()))));
                     return true;
                 }
             }
             else if(!(sender instanceof Player))
             {
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', (String) Objects.requireNonNull(getRtpMessage().get("IfSenderConsole"))));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        Objects.requireNonNull(getRtpMessage().get("IfSenderConsole").toString())));
                 return true;
             }
             else
             {
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', (String) Objects.requireNonNull(getRtpMessage().get("DontHavePermission"))));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        Objects.requireNonNull(getRtpMessage().get("DontHavePermission").toString()
+                                .replace("%SENDER", sender.getName()))));
                 return true;
             }
         return false;
