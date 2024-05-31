@@ -1,5 +1,8 @@
+#Don't have a parm
 IfSenderConsole: "&cThis command only for Player or type Player name for teleport. 
 Example /rtp [PLAYER]"
+#Have a 2 parm %SENDER and %PLAYER.
+#If player use that for him only 1 parm %SENDER.
 TryTeleportedInBlockWorld: "&cYou can't teleported there."
 #Parm %X and %Z only for this message.
 TeleportedMessage: "&3You teleported at X - %X, Z - %Z"
