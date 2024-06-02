@@ -16,8 +16,8 @@ import static org.bukkit.plugin.java.JavaPlugin.getPlugin;
 
 public class Join implements Listener
 {
-    public File joinFile = new File(getPlugin(PoL_SF.class).getDataFolder(), "JoinMessage.yml");
-    public FileConfiguration joinMSG = YamlConfiguration.loadConfiguration(joinFile);
+    public static File joinFile = new File(getPlugin(PoL_SF.class).getDataFolder(), "JoinMessage.yml");
+    public static FileConfiguration joinMSG = YamlConfiguration.loadConfiguration(joinFile);
 
     public FileConfiguration getJoinMSG()
     {
@@ -30,6 +30,11 @@ public class Join implements Listener
         {
             plugin.saveResource("JoinMessage.yml", false);
         }
+    }
+
+    public static void reloadCFGJoin()
+    {
+        joinMSG = YamlConfiguration.loadConfiguration(joinFile);
     }
 
     @EventHandler

@@ -1,9 +1,12 @@
-X-max: 1000
-X-min: 100
-Z-max: 1000
-Z-min: 100
+X-max: 10
+X-min: 1
+Z-max: 10
+Z-min: 1
 #Block list of world's
 #Type name of the world in your folder server
 BlockWorld: [world_nether, world_the_end]
 #Block list for block's
-BlockListIgnored:
+BlockListIgnored: [OAK_LEAVES, LAVA, WATER]
+NoMessageForAdmin: []
+EnableTimeCooldown: true
+TimeCooldown: 20

@@ -7,10 +7,27 @@ commands:
   rtp:
     description: Random teleport in the world or teleport a player.
     usage: /<command> or /<command> [Player]
+  pol:
+    description: Reload configuration plugin.
+    usage: /<command> reload
 permissions:
-  pol.rtp:
+  PoL.*:
+    default: op
+    description: All permission plugin.
+    children:
+      PoL.rtp: true
+      PoL.rtp.Player: true
+      PoL.NoCooldown: true
+      PoL.reload: true
+  PoL.rtp:
     default: op
     description: Random teleport in the world.
-  pol.rtp.Player:
+  PoL.rtp.Player:
     default: op
     description: Random teleport Player in the world.
+  PoL.rtp.NoCooldown:
+    default: op
+    description: Random teleport with out cooldown.
+  PoL.reload:
+    default: op
+    description: Reload configuration plugin.
