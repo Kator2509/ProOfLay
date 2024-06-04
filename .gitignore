@@ -1,6 +1,9 @@
 # User-specific stuff
 .idea/
 
+#Custom by PoL
+pom.xml
+
 *.iml
 *.ipr
 *.iws
