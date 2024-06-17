@@ -32,7 +32,7 @@ public final class PoL_SF extends JavaPlugin implements Listener, CommandExecuto
         if(config.getBoolean("ChatModule")) {
             ChatConfig chatCFG = new ChatConfig();
             chatCFG.loadChatCFG(this);
-            this.getServer().getPluginManager().registerEvents(new ChatMessanger(), this);
+            Bukkit.getPluginManager().registerEvents(new ChatMessanger(), this);
             Bukkit.getConsoleSender().sendMessage("§b| PoL-SF Chat load.");
         }
         if(config.getBoolean("RandomTeleport"))
@@ -84,7 +84,8 @@ public final class PoL_SF extends JavaPlugin implements Listener, CommandExecuto
         }
         else if(!sender.hasPermission(permReload))
         {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("DontHavePermission"))));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("DontHavePermission"))
+                    .replace("%SENDER", sender.getName())));
         }
         return true;
     }

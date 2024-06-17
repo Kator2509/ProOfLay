@@ -1,1 +1,2 @@
 GlobalChat: true
+ConsoleSenderFormat: "&c[CONSOLE]: &3%MESSAGE"

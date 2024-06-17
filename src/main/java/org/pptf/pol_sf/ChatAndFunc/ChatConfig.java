@@ -14,10 +14,6 @@ public class ChatConfig
     public static File chatFile = new File(getPlugin(PoL_SF.class).getDataFolder(), "Chat/ChatCFG.yml");
     public static FileConfiguration chatCFG = YamlConfiguration.loadConfiguration(chatFile);
 
-    public FileConfiguration getChatCFG()
-    {
-        return chatCFG;
-    }
     public void loadChatCFG(Plugin plugin)
     {
         if(!chatFile.exists())
@@ -25,6 +21,11 @@ public class ChatConfig
             plugin.saveResource("Chat/ChatCFG.yml", false);
         }
         chatCFG = YamlConfiguration.loadConfiguration(chatFile);
+    }
+
+    public static FileConfiguration getConfigChat()
+    {
+        return chatCFG;
     }
 
     public static void reloadCFGChat()
