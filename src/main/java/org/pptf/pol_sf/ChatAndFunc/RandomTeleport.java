@@ -26,17 +26,16 @@ import static org.bukkit.plugin.java.JavaPlugin.getPlugin;
 public class RandomTeleport implements CommandExecutor {
     public static File rtpFile = new File(getPlugin(PoL_SF.class).getDataFolder(), "rtp/rtpCFG.yml");
     public static File rtpMess = new File(getPlugin(PoL_SF.class).getDataFolder(), "rtp/rtpMessage.yml");
-    public static FileConfiguration rtpCFG = YamlConfiguration.loadConfiguration(rtpFile);
-    public static FileConfiguration rtpMessage = YamlConfiguration.loadConfiguration(rtpMess);
+    public static FileConfiguration rtpCFG;
+    public static FileConfiguration rtpMessage;
     private final Permission rtp = new Permission("PoL.rtp"), rtpPlayer = new Permission("PoL.rtp.Player"), rtpNoCooldown = new Permission("PoL.rtp.NoCooldown");
     private final Random random = new Random();
-    private final Boolean isEnableCooldown = rtpCFG.isBoolean("EnableTimeCooldown");
     private final HashMap<String, Long> cooldown = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (sender instanceof Player && sender.hasPermission(rtpNoCooldown) && args.length == 0 && isEnableCooldown) {
+        if (sender instanceof Player && sender.hasPermission(rtpNoCooldown) && args.length == 0 && rtpCFG.isBoolean("EnableTimeCooldown")) {
             World worldSender = ((Player) sender).getWorld();
             double X = random.nextInt(getRtpCFG().getInt("X-min"), getRtpCFG().getInt("X-max")) + 0.5,
                     Z = random.nextInt(getRtpCFG().getInt("Z-min"), getRtpCFG().getInt("Z-max")) + 0.5;
@@ -71,7 +70,7 @@ public class RandomTeleport implements CommandExecutor {
                     Y = block.getY() + 1;
                 }
                 ((Player) sender).teleport(new Location(worldSender, X, Y, Z));
-                if(isEnableCooldown) {
+                if(rtpCFG.isBoolean("EnableTimeCooldown")) {
                     setCooldown(sender.getName());
                 }
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
@@ -141,7 +140,7 @@ public class RandomTeleport implements CommandExecutor {
                             .replace("%SENDER", sender.getName()))));
         } else if (!(sender instanceof Player)) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    Objects.requireNonNull(getRtpMessage().get("IfSenderConsole").toString())));
+                    Objects.requireNonNull(Objects.requireNonNull(getRtpMessage().get("IfSenderConsole")).toString())));
             return true;
         }
         else if(args.length > 1 && sender.hasPermission(rtpPlayer))
@@ -164,6 +163,8 @@ public class RandomTeleport implements CommandExecutor {
             plugin.saveResource("rtp/rtpCFG.yml", false);
             plugin.saveResource("rtp/rtpMessage.yml", false);
         }
+        rtpCFG = YamlConfiguration.loadConfiguration(rtpFile);
+        rtpMessage = YamlConfiguration.loadConfiguration(rtpMess);
     }
 
     public FileConfiguration getRtpCFG() {

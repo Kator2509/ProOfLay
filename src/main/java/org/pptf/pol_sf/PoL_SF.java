@@ -7,51 +7,56 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.pptf.pol_sf.ChatAndFunc.ChatConfig;
 import org.pptf.pol_sf.ChatAndFunc.ChatMessanger;
 import org.pptf.pol_sf.ChatAndFunc.RandomTeleport;
 import org.pptf.pol_sf.JoinAndLeaveEvent.Join;
+import org.pptf.pol_sf.JoinAndLeaveEvent.RegisterEvent.RegisterMethod;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
 public final class PoL_SF extends JavaPlugin implements Listener, CommandExecutor {
-    public final FileConfiguration cfg = this.getConfig();
-
     @Override
     public void onEnable() {
-        cfg.addDefault("ChatModule", true);
-        cfg.addDefault("RandomTeleport", true);
-        cfg.addDefault("JoinMessage", true);
-        cfg.addDefault("ReloadMessage", "&3[PoL] Plugin reload.");
-        cfg.addDefault("DontHavePermission", "&c[PoL] You don't have permission.");
-        cfg.options().copyDefaults(true);
-        saveConfig();
+        saveResource("Config.yml", false);
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "o---------------------------o");
-        if(cfg.getBoolean("ChatModule")) {
+        if(getConfig().getBoolean("ChatModule")) {
             ChatConfig chatCFG = new ChatConfig();
             chatCFG.loadChatCFG(this);
             ChatConfig.chatCFG = getConfig();
             this.getServer().getPluginManager().registerEvents(new ChatMessanger(), this);
+            ChatConfig.reloadCFGChat();
             Bukkit.getConsoleSender().sendMessage("§b| PoL-SF Chat load.");
         }
-        if(cfg.getBoolean("RandomTeleport"))
+        if(getConfig().getBoolean("RandomTeleport"))
         {
             RandomTeleport rtpCFG = new RandomTeleport();
             rtpCFG.loadRtpCFG(this);
             Objects.requireNonNull(this.getCommand("rtp")).setExecutor(new RandomTeleport());
+            RandomTeleport.rtpCFG = getConfig();
+            RandomTeleport.rtpMessage = getConfig();
+            RandomTeleport.reloadRTPConfig();
             Bukkit.getConsoleSender().sendMessage("§b| PoL-SF rtp load.");
         }
-        if(cfg.getBoolean("JoinMessage"))
+        if(getConfig().getBoolean("JoinMessage"))
         {
             Join join = new Join();
             join.loadJoin(this);
             this.getServer().getPluginManager().registerEvents(new Join(), this);
             Join.joinMSG = getConfig();
+            Join.reloadCFGJoin();
             Bukkit.getConsoleSender().sendMessage("§b| PoL-SF Join and Quit load.");
+        }
+        if(getConfig().getBoolean("EnableRegisterMethod"))
+        {
+            RegisterMethod.reloadRegister();
         }
         this.getServer().getPluginManager().registerEvents(this, this);
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "| PoL-SF Start.");
@@ -75,7 +80,8 @@ public final class PoL_SF extends JavaPlugin implements Listener, CommandExecuto
             RandomTeleport.reloadRTPConfig();
             ChatConfig.reloadCFGChat();
             Join.reloadCFGJoin();
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(cfg.getString("ReloadMessage"))));
+            RegisterMethod.reloadRegister();
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(getConfig().getString("ReloadMessage"))));
         }
         else if(args.length == 0 || args.length > 2)
         {
@@ -83,7 +89,7 @@ public final class PoL_SF extends JavaPlugin implements Listener, CommandExecuto
         }
         else if(!sender.hasPermission(permReload))
         {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(cfg.getString("DontHavePermission"))));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(getConfig().getString("DontHavePermission"))));
         }
         return true;
     }
