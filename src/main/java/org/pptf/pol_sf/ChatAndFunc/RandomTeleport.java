@@ -8,7 +8,6 @@ import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -24,10 +23,9 @@ import java.util.Random;
 import static org.bukkit.plugin.java.JavaPlugin.getPlugin;
 
 public class RandomTeleport implements CommandExecutor {
-    public static File rtpFile = new File(getPlugin(PoL_SF.class).getDataFolder(), "rtp/rtpCFG.yml");
-    public static File rtpMess = new File(getPlugin(PoL_SF.class).getDataFolder(), "rtp/rtpMessage.yml");
-    public static FileConfiguration rtpCFG;
-    public static FileConfiguration rtpMessage;
+    public static File rtpFile = new File(getPlugin(PoL_SF.class).getDataFolder(), "rtp/rtpCFG.yml"),
+    rtpMess = new File(getPlugin(PoL_SF.class).getDataFolder(), "rtp/rtpMessage.yml");
+    public static FileConfiguration rtpCFG, rtpMessage;
     private final Permission rtp = new Permission("PoL.rtp"), rtpPlayer = new Permission("PoL.rtp.Player"), rtpNoCooldown = new Permission("PoL.rtp.NoCooldown");
     private final Random random = new Random();
     private final HashMap<String, Long> cooldown = new HashMap<>();

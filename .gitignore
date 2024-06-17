@@ -1,6 +1,9 @@
 # User-specific stuff
 .idea/
 
+# PoL-SF compiler file configurate
+pom.xml
+
 *.iml
 *.ipr
 *.iws

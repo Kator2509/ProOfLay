@@ -1,7 +1,5 @@
 package org.pptf.pol_sf.ChatAndFunc;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -14,7 +12,7 @@ import static org.bukkit.plugin.java.JavaPlugin.getPlugin;
 public class ChatConfig
 {
     public static File chatFile = new File(getPlugin(PoL_SF.class).getDataFolder(), "Chat/ChatCFG.yml");
-    public static FileConfiguration chatCFG;
+    public static FileConfiguration chatCFG = YamlConfiguration.loadConfiguration(chatFile);
 
     public FileConfiguration getChatCFG()
     {

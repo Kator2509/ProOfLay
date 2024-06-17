@@ -2,6 +2,5 @@ ChatModule: true
 RandomTeleport: true
 JoinMessage: true
 EnableRegisterMethod: false
-#TEST COMMENT
 ReloadMessage: "&3[PoL] Plugin reload."
 DontHavePermission: "&c[PoL] You don't have permission."
