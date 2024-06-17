@@ -1,5 +1,10 @@
 package org.pptf.pol_sf.JoinAndLeaveEvent;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -7,17 +12,24 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.Plugin;
+import org.pptf.pol_sf.JoinAndLeaveEvent.RegisterEvent.RegisterMethod;
 import org.pptf.pol_sf.PoL_SF;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Objects;
 
 import static org.bukkit.plugin.java.JavaPlugin.getPlugin;
 
-public class Join implements Listener
+public class Join extends RegisterMethod implements Listener, CommandExecutor
 {
     public static File joinFile = new File(getPlugin(PoL_SF.class).getDataFolder(), "JoinMessage.yml");
     public static FileConfiguration joinMSG;
+    Permission motdPerm = new Permission("PoL.motd");
+    PoL_SF pl = new PoL_SF();
 
     public FileConfiguration getJoinMSG()
     {
@@ -42,11 +54,29 @@ public class Join implements Listener
     public void onJoin(PlayerJoinEvent event)
     {
         Player player = event.getPlayer();
+        if(pl.getConfiguration().getBoolean("EnableRegisterMethod"))
+        {
+            registerPlayerInSystem(player);
+            Bukkit.getConsoleSender().sendMessage("&bRegister a " + player.getName());
+        }
     }
 
     @EventHandler
     public void onLeave(PlayerQuitEvent event)
     {
         Player player = event.getPlayer();
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
+    {
+        if(sender.hasPermission(motdPerm))
+        {
+            sender.sendMessage(Objects.requireNonNull(ChatColor.translateAlternateColorCodes('&',
+                    Objects.requireNonNull(pl.getConfiguration().getString("Motd"))
+                            .replace("%SENDER", sender.getName()))));
+            return true;
+        }
+        return false;
     }
 }

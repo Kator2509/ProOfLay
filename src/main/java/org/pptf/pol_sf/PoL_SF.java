@@ -47,11 +47,14 @@ public final class PoL_SF extends JavaPlugin implements Listener, CommandExecuto
             Join join = new Join();
             join.loadJoin(this);
             this.getServer().getPluginManager().registerEvents(new Join(), this);
+            Objects.requireNonNull(this.getCommand("motd")).setExecutor(new Join());
             Bukkit.getConsoleSender().sendMessage("§b| PoL-SF Join and Quit load.");
         }
         if(config.getBoolean("EnableRegisterMethod"))
         {
-            RegisterMethod.reloadRegister();
+            RegisterMethod regMet = new RegisterMethod();
+            regMet.loadRegister(this);
+            Bukkit.getConsoleSender().sendMessage("§b| PoL-SF Register enable.");
         }
         this.getServer().getPluginManager().registerEvents(this, this);
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "| PoL-SF Start.");
@@ -63,6 +66,11 @@ public final class PoL_SF extends JavaPlugin implements Listener, CommandExecuto
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "o---------------------------o");
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "| PoL-SF disabled.");
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "o---------------------------o");
+    }
+
+    public FileConfiguration getConfiguration()
+    {
+        return config;
     }
 
     Permission permReload = new Permission("PoL.reload");

@@ -13,6 +13,9 @@ commands:
   say:
     description: Say from server in global.
     usage: /<command> [message] test
+  motd:
+    description: Daily message.
+    usage: /<command>
 permissions:
   PoL.*:
     default: op
@@ -21,6 +24,7 @@ permissions:
       PoL.rtp: true
       PoL.rtp.Player: true
       PoL.NoCooldown: true
+      PoL.motd: true
       PoL.reload: true
   PoL.rtp:
     default: op
@@ -31,6 +35,9 @@ permissions:
   PoL.rtp.NoCooldown:
     default: op
     description: Random teleport with out cooldown.
+  PoL.motd:
+    default: op
+    description: Daily message.
   PoL.reload:
     default: op
     description: Reload configuration plugin.

@@ -19,23 +19,25 @@ import static org.bukkit.plugin.java.JavaPlugin.getPlugin;
 public class RegisterMethod
 {
     public static File registerFile = new File(getPlugin(PoL_SF.class).getDataFolder(), "Register/RegisterMethodConfig.yml");
-    public static FileConfiguration registerCFG = YamlConfiguration.loadConfiguration(registerFile);
-    ZoneId timeZone = ZoneId.of(registerCFG.get("TimeZone").toString());
-    LocalDate localDate = LocalDate.now(timeZone);
+    public static FileConfiguration registerCFG;
+    ZoneId timeZone;
+    LocalDate localDate;
     ObjectMapper objectMapper = new ObjectMapper();
     ObjectNode objectNode = objectMapper.createObjectNode();
 
-    public void registerPlayerInSystem(Player player, Plugin plugin)
+    public void registerPlayerInSystem(Player player)
     {
         if(!player.hasPlayedBefore())
         {
+            timeZone = ZoneId.of(registerCFG.get("TimeZone").toString());
+            localDate = LocalDate.now(timeZone);
             objectNode.put("UUID", player.getUniqueId().toString());
             objectNode.put("DateRegister", localDate.toString());
             try {
-                objectMapper.writeValue(new File(plugin.getDataFolder() + "/DataPlayers/" + player.getName()), objectNode);
+                objectMapper.writeValue(new File(getPlugin(PoL_SF.class).getDataFolder() + "/DataPlayers/" + player.getName()), objectNode);
             } catch (IOException e)
             {
-                Bukkit.getConsoleSender().sendMessage("Can't created the json file of Player" + player.getName());
+                Bukkit.getConsoleSender().sendMessage("Can't created the json file of Player - " + player.getName());
                 e.printStackTrace();
             }
         }
@@ -47,6 +49,7 @@ public class RegisterMethod
         {
             plugin.saveResource("Register/RegisterMethodConfig.yml", false);
         }
+        registerCFG = YamlConfiguration.loadConfiguration(registerFile);
     }
 
     public static void reloadRegister()
