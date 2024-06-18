@@ -32,7 +32,6 @@ public class RandomTeleport implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
         if (sender instanceof Player && sender.hasPermission(rtpNoCooldown) && args.length == 0 && rtpCFG.isBoolean("EnableTimeCooldown")) {
             World worldSender = ((Player) sender).getWorld();
             double X = random.nextInt(getRtpCFG().getInt("X-min"), getRtpCFG().getInt("X-max")) + 0.5,

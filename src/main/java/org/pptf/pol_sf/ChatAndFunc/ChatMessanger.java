@@ -2,33 +2,56 @@ package org.pptf.pol_sf.ChatAndFunc;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.permissions.Permission;
 
 import java.util.Objects;
 
-public class ChatMessanger extends ChatConfig implements Listener
+public class ChatMessanger extends ChatConfig implements Listener, CommandExecutor
 {
-    Permission permOnChat = new Permission("PoL.Chat");
-    @EventHandler
-    public void onPlayerCommand(PlayerCommandPreprocessEvent commandCheck)
+    /*
+    If you want to get a permission to player need get him Chat permission
+    and if enabled local or global, need get him permission on their chat.
+     */
+    Permission permOnChat = new Permission("PoL.Chat"), /*Permission on chat*/
+            permOnGlobal = new Permission("PoL.Chat.Global"), /*Permission on global chat if that enable*/
+            permOnLocalChat = new Permission("PoL.Chat.Local"), /*Permission on local chat if that enable*/
+            permOnConsoleMessage = new Permission("PoL.say");
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
-        if(commandCheck.getMessage().startsWith("/say"))
+        if(!(sender instanceof Player) && args.length != 0 || (sender.hasPermission(permOnConsoleMessage) && args.length != 0))
         {
-            commandCheck.setCancelled(true);
-            String[] split = commandCheck.getMessage().split(" ");
             String message = "";
-            for(int i = 1; i < split.length; i++)
+            for(int i = 0; i < args.length; i++)
             {
-                message += split[i];
+                message += args[i];
             }
-            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    Objects.requireNonNull(Objects.requireNonNull(getConfigChat().getString("ConsoleSenderFormat"))
-                            .replace("%SENDER", commandCheck.getPlayer().getName())
-                            .replace("%MESSAGE", message))));
-            System.out.println(message);
+            Bukkit.broadcastMessage(Objects.requireNonNull(ChatColor.translateAlternateColorCodes('&',
+                    Objects.requireNonNull(getConfigChat().getString("ConsoleSenderFormat")
+                            .replace("%SENDER", sender.getName())
+                            .replace("%MESSAGE", message)))));
+            System.out.println(args.length);
+            return true;
         }
+        else if(args.length != 0)
+        {
+            sender.sendMessage(Objects.requireNonNull(ChatColor.translateAlternateColorCodes('&',
+                    Objects.requireNonNull(getConfigChat().getString("OutOfPermission"))
+                            .replace("%SENDER", sender.getName()))));
+        }
+        return false;
+    }
+
+    @EventHandler
+    public void onChat(AsyncPlayerChatEvent event)
+    {
+
     }
 }

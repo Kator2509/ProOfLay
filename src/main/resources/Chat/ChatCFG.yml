@@ -1,2 +1,6 @@
-GlobalChat: true
+GlobalChatEnable: true
+#If global is enabled, there working with local chat on range.
+#Default range 150.
+rangeChat: 150
 ConsoleSenderFormat: "&c[CONSOLE]: &3%MESSAGE"
+OutOfPermission: "&cYou don't have permission."

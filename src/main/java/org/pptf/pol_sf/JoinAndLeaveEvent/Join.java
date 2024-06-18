@@ -29,7 +29,6 @@ public class Join extends RegisterMethod implements Listener, CommandExecutor
     public static File joinFile = new File(getPlugin(PoL_SF.class).getDataFolder(), "JoinMessage.yml");
     public static FileConfiguration joinMSG;
     Permission motdPerm = new Permission("PoL.motd");
-    PoL_SF pl = new PoL_SF();
 
     public FileConfiguration getJoinMSG()
     {
@@ -54,7 +53,7 @@ public class Join extends RegisterMethod implements Listener, CommandExecutor
     public void onJoin(PlayerJoinEvent event)
     {
         Player player = event.getPlayer();
-        if(pl.getConfiguration().getBoolean("EnableRegisterMethod"))
+        if(PoL_SF.getConfiguration().getBoolean("EnableRegisterMethod"))
         {
             registerPlayerInSystem(player);
             Bukkit.getConsoleSender().sendMessage("&bRegister a " + player.getName());
@@ -73,7 +72,7 @@ public class Join extends RegisterMethod implements Listener, CommandExecutor
         if(sender.hasPermission(motdPerm))
         {
             sender.sendMessage(Objects.requireNonNull(ChatColor.translateAlternateColorCodes('&',
-                    Objects.requireNonNull(pl.getConfiguration().getString("Motd"))
+                    Objects.requireNonNull(PoL_SF.getConfiguration().getString("Motd"))
                             .replace("%SENDER", sender.getName()))));
             return true;
         }

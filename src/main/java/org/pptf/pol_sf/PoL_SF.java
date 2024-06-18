@@ -20,8 +20,13 @@ import java.io.File;
 import java.util.Objects;
 
 public final class PoL_SF extends JavaPlugin implements Listener, CommandExecutor {
+
+    /*
+
+     */
+
     public File cfgFile = new File(this.getDataFolder(), "Config.yml");
-    public FileConfiguration config;
+    public static FileConfiguration config;
     @Override
     public void onEnable() {
         if(!cfgFile.exists()) {
@@ -32,6 +37,7 @@ public final class PoL_SF extends JavaPlugin implements Listener, CommandExecuto
         if(config.getBoolean("ChatModule")) {
             ChatConfig chatCFG = new ChatConfig();
             chatCFG.loadChatCFG(this);
+            Objects.requireNonNull(this.getCommand("say")).setExecutor(new ChatMessanger());
             Bukkit.getPluginManager().registerEvents(new ChatMessanger(), this);
             Bukkit.getConsoleSender().sendMessage("§b| PoL-SF Chat load.");
         }
@@ -68,7 +74,7 @@ public final class PoL_SF extends JavaPlugin implements Listener, CommandExecuto
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "o---------------------------o");
     }
 
-    public FileConfiguration getConfiguration()
+    public static FileConfiguration getConfiguration()
     {
         return config;
     }
