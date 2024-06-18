@@ -13,6 +13,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 import org.pptf.pol_sf.PoL_SF;
 
 import java.io.File;
@@ -31,7 +32,7 @@ public class RandomTeleport implements CommandExecutor {
     private final HashMap<String, Long> cooldown = new HashMap<>();
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (sender instanceof Player && sender.hasPermission(rtpNoCooldown) && args.length == 0 && rtpCFG.isBoolean("EnableTimeCooldown")) {
             World worldSender = ((Player) sender).getWorld();
             double X = random.nextInt(getRtpCFG().getInt("X-min"), getRtpCFG().getInt("X-max")) + 0.5,
@@ -46,7 +47,7 @@ public class RandomTeleport implements CommandExecutor {
             }
             ((Player) sender).teleport(new Location(worldSender, X, Y, Z));
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    Objects.requireNonNull(getRtpMessage().get("TeleportedMessage").toString()
+                    Objects.requireNonNull(Objects.requireNonNull(getRtpMessage().get("TeleportedMessage")).toString()
                             .replace("%X", String.valueOf(X))
                             .replace("%Z", String.valueOf(Z))
                             .replace("%Y", String.valueOf(Y))
@@ -71,14 +72,14 @@ public class RandomTeleport implements CommandExecutor {
                     setCooldown(sender.getName());
                 }
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        Objects.requireNonNull(getRtpMessage().get("TeleportedMessage").toString()
+                        Objects.requireNonNull(Objects.requireNonNull(getRtpMessage().get("TeleportedMessage")).toString()
                                 .replace("%X", String.valueOf(X))
                                 .replace("%Z", String.valueOf(Z))
                                 .replace("%Y", String.valueOf(Y))
                                 .replace("%SENDER", sender.getName()))));
             } else {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        Objects.requireNonNull(getRtpMessage().get("TryTeleportedInBlockWorld").toString()
+                        Objects.requireNonNull(Objects.requireNonNull(getRtpMessage().get("TryTeleportedInBlockWorld")).toString()
                                 .replace("%SENDER", sender.getName()))));
             }
             return true;
@@ -88,26 +89,26 @@ public class RandomTeleport implements CommandExecutor {
                 if (Objects.requireNonNull(player).isOnline()) {
                     World worldSender = player.getWorld();
                     if (!getRtpCFG().getStringList("BlockWorld").contains(worldSender.getName())) {
-                        int X = random.nextInt(getRtpCFG().getInt("X-min"), getRtpCFG().getInt("X-max")),
+                        double X = random.nextInt(getRtpCFG().getInt("X-min"), getRtpCFG().getInt("X-max")),
                                 Z = random.nextInt(getRtpCFG().getInt("Z-min"), getRtpCFG().getInt("Z-max"));
-                        Block block = worldSender.getHighestBlockAt(X, Z);
+                        Block block = worldSender.getHighestBlockAt((int) X, (int) Z);
                         int Y = block.getY() + 1;
                         while (getRtpCFG().getStringList("BlockListIgnored").contains(block.getType().name())) {
-                            X = random.nextInt(getRtpCFG().getInt("X-min"), getRtpCFG().getInt("X-max"));
-                            Z = random.nextInt(getRtpCFG().getInt("Z-min"), getRtpCFG().getInt("Z-max"));
+                            X = random.nextInt(getRtpCFG().getInt("X-min"), getRtpCFG().getInt("X-max")) + 0.5;
+                            Z = random.nextInt(getRtpCFG().getInt("Z-min"), getRtpCFG().getInt("Z-max")) + 0.5;
                             block = worldSender.getHighestBlockAt((int) X, (int) Z);
                             Y = block.getY() + 1;
                         }
-                        player.teleport(new Location(worldSender, X + 0.5, Y, Z + 0.5));
+                        player.teleport(new Location(worldSender, X, Y, Z));
                         sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                                Objects.requireNonNull(getRtpMessage().get("TeleportedMessageForPlayer").toString()
+                                Objects.requireNonNull(Objects.requireNonNull(getRtpMessage().get("TeleportedMessageForPlayer")).toString()
                                         .replace("%X", String.valueOf(X))
                                         .replace("%Z", String.valueOf(Z))
                                         .replace("%Y", String.valueOf(Y))
                                         .replace("%PLAYER", player.getName())
                                         .replace("%SENDER", sender.getName()))));
                         player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                                Objects.requireNonNull(getRtpMessage().get("TeleportedMessageByPlayer").toString()
+                                Objects.requireNonNull(Objects.requireNonNull(getRtpMessage().get("TeleportedMessageByPlayer")).toString()
                                         .replace("%X", String.valueOf(X))
                                         .replace("%Z", String.valueOf(Z))
                                         .replace("%Y", String.valueOf(Y))
@@ -115,7 +116,7 @@ public class RandomTeleport implements CommandExecutor {
                                         .replace("%SENDER", sender.getName()))));
                     } else {
                         sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                                Objects.requireNonNull(getRtpMessage().get("TryTeleportedInBlockWorld").toString()
+                                Objects.requireNonNull(Objects.requireNonNull(getRtpMessage().get("TryTeleportedInBlockWorld")).toString()
                                         .replace("%PLAYER", player.getName())
                                         .replace("%SENDER", sender.getName()))));
                     }
@@ -123,7 +124,7 @@ public class RandomTeleport implements CommandExecutor {
                 }
             } catch (NullPointerException e) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        Objects.requireNonNull(getRtpMessage().get("PlayerOffline").toString()
+                        Objects.requireNonNull(Objects.requireNonNull(getRtpMessage().get("PlayerOffline")).toString()
                                 .replace("%PLAYER", args[0])
                                 .replace("%SENDER", sender.getName()))));
                 return true;
@@ -132,7 +133,7 @@ public class RandomTeleport implements CommandExecutor {
         else if(isCooldown(sender.getName(), rtpCFG.getInt("TimeCooldown")) && sender instanceof Player)
         {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    Objects.requireNonNull(getRtpMessage().get("TimeCooldownMessag").toString()
+                    Objects.requireNonNull(Objects.requireNonNull(getRtpMessage().get("TimeCooldownMessage")).toString()
                             .replace("%TIME", getCooldownValue(sender.getName(), 20))
                             .replace("%SENDER", sender.getName()))));
         } else if (!(sender instanceof Player)) {
@@ -143,12 +144,12 @@ public class RandomTeleport implements CommandExecutor {
         else if(args.length > 1 && sender.hasPermission(rtpPlayer))
         {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    Objects.requireNonNull(getRtpMessage().get("ToManyArguments").toString()
+                    Objects.requireNonNull(Objects.requireNonNull(getRtpMessage().get("ToManyArguments")).toString()
                             .replace("%SENDER", sender.getName()))));
             return true;
         } else {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    Objects.requireNonNull(getRtpMessage().get("DontHavePermission").toString()
+                    Objects.requireNonNull(Objects.requireNonNull(getRtpMessage().get("DontHavePermission")).toString()
                             .replace("%SENDER", sender.getName()))));
             return true;
         }
@@ -184,8 +185,7 @@ public class RandomTeleport implements CommandExecutor {
     public String getCooldownValue(String player, Integer time)
     {
         long timeRemain = time - getCooldown(player);
-        String messageTime = String.valueOf(timeRemain);
-        return messageTime;
+        return String.valueOf(timeRemain);
     }
 
     public boolean isCooldown(String player, Integer time) {

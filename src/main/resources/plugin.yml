@@ -12,7 +12,7 @@ commands:
     usage: /<command> reload
   say:
     description: Say from server in global.
-    usage: /<command> [message] test
+    usage: /<command> [message]
   motd:
     description: Daily message.
     usage: /<command>

@@ -10,6 +10,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import org.pptf.pol_sf.ChatAndFunc.ChatConfig;
 import org.pptf.pol_sf.ChatAndFunc.ChatMessanger;
 import org.pptf.pol_sf.ChatAndFunc.RandomTeleport;
@@ -21,9 +22,14 @@ import java.util.Objects;
 
 public final class PoL_SF extends JavaPlugin implements Listener, CommandExecutor {
 
-    /*
-
-     */
+    /*    _______       ____     .
+    /    |       \     /    \    |
+    /    |        )   /      \   |
+    /    |_______/   |        |  |
+    /    |           |        |  |
+    /    |            \      /   |
+    /    |             \____/    |________
+    */
 
     public File cfgFile = new File(this.getDataFolder(), "Config.yml");
     public static FileConfiguration config;
@@ -81,7 +87,7 @@ public final class PoL_SF extends JavaPlugin implements Listener, CommandExecuto
 
     Permission permReload = new Permission("PoL.reload");
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
+    public boolean onCommand(CommandSender sender, @NotNull Command command, @NotNull String label, String[] args)
     {
         if(sender.hasPermission(permReload) && args.length != 0 && args[0].equals("reload"))
         {

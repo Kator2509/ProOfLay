@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 import org.pptf.pol_sf.JoinAndLeaveEvent.RegisterEvent.RegisterMethod;
 import org.pptf.pol_sf.PoL_SF;
 
@@ -58,6 +59,7 @@ public class Join extends RegisterMethod implements Listener, CommandExecutor
             registerPlayerInSystem(player);
             Bukkit.getConsoleSender().sendMessage("&bRegister a " + player.getName());
         }
+        Bukkit.getServer().dispatchCommand(event.getPlayer().getServer().getConsoleSender(), "motd");
     }
 
     @EventHandler
@@ -67,7 +69,7 @@ public class Join extends RegisterMethod implements Listener, CommandExecutor
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
+    public boolean onCommand(CommandSender sender, @NotNull Command command, @NotNull String label, String[] args)
     {
         if(sender.hasPermission(motdPerm))
         {

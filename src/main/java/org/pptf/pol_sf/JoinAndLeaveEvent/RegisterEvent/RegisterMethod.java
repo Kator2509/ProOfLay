@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Objects;
 
 import static org.bukkit.plugin.java.JavaPlugin.getPlugin;
 
@@ -29,7 +30,7 @@ public class RegisterMethod
     {
         if(!player.hasPlayedBefore())
         {
-            timeZone = ZoneId.of(registerCFG.get("TimeZone").toString());
+            timeZone = ZoneId.of(Objects.requireNonNull(registerCFG.get("TimeZone")).toString());
             localDate = LocalDate.now(timeZone);
             objectNode.put("UUID", player.getUniqueId().toString());
             objectNode.put("DateRegister", localDate.toString());
