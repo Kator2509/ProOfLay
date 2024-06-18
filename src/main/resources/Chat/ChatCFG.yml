@@ -3,7 +3,7 @@ GlobalChatEnable: false
 #Default range 150.
 rangeChat: 150
 ConsoleSenderFormat: "&c[CONSOLE]: &3%MESSAGE"
-MessageFormat: "&7%PREFIX %PLAYER &f%SUFFIX: %MESSAGE"
-GlobalChatFormat: "&2[G] &7%PREFIX %PLAYER &f%SUFFIX: %MESSAGE"
-LocalChatFormat: "&1[L] &7%PREFIX %PLAYER &f%SUFFIX: %MESSAGE"
+MessageFormat: "&7%PREFIX%PLAYER&f%SUFFIX: %MESSAGE"
+GlobalChatFormat: "&2[G] &7%PREFIX%PLAYER&f%SUFFIX: %MESSAGE"
+LocalChatFormat: "&1[L] &7%PREFIX%PLAYER&f%SUFFIX: %MESSAGE"
 DontHavePermission: "&cYou don't have permission."

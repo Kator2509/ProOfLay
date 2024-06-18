@@ -24,7 +24,7 @@ public final class PoL_SF extends JavaPlugin implements Listener, CommandExecuto
 
     /*    _______       ____     .
     /    |       \     /    \    |
-    /    |        )   /      \   |
+    /    |        |   /      \   |
     /    |_______/   |        |  |
     /    |           |        |  |
     /    |            \      /   |

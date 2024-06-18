@@ -64,6 +64,14 @@ public class ChatMessanger extends ChatConfig implements Listener, CommandExecut
         User user = Objects.requireNonNull(ap).getUserManager().getUser(event.getPlayer().getName());
         String prefix = Objects.requireNonNull(user).getCachedData().getMetaData().getPrefix();
         String suffix = Objects.requireNonNull(user).getCachedData().getMetaData().getSuffix();
+        if(prefix == null)
+        {
+            prefix = "";
+        }
+        if(suffix == null)
+        {
+            suffix = "";
+        }
 
         if(!getConfigChat().getBoolean("GlobalChatEnable"))
         {
@@ -71,7 +79,8 @@ public class ChatMessanger extends ChatConfig implements Listener, CommandExecut
                     Objects.requireNonNull(getConfigChat().getString("MessageFormat"))
                             .replace("%PREFIX", Objects.requireNonNull(prefix))
                             .replace("%PLAYER", event.getPlayer().getName())
-                            .replace("%SUFFIX", Objects.requireNonNull(suffix)))));
+                            .replace("%SUFFIX", Objects.requireNonNull(suffix))
+                            .replace("%MESSAGE", event.getMessage()))));
         }
     }
 }
