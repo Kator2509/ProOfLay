@@ -4,9 +4,11 @@ import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.user.User;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,7 +26,7 @@ public class ChatMessanger extends ChatConfig implements Listener, CommandExecut
     and if enabled local or global, need get him permission on their chat.
      */
     Permission permOnChat = new Permission("PoL.Chat"), /*Permission on chat*/
-            permOnGlobal = new Permission("PoL.Chat.Global"), /*Permission on global chat if that enable*/
+            permOnGlobalChat = new Permission("PoL.Chat.Global"), /*Permission on global chat if that enable*/
             permOnLocalChat = new Permission("PoL.Chat.Local"), /*Permission on local chat if that enable*/
             permOnConsoleMessage = new Permission("PoL.say");
     @Override
@@ -73,14 +75,47 @@ public class ChatMessanger extends ChatConfig implements Listener, CommandExecut
             suffix = "";
         }
 
-        if(!getConfigChat().getBoolean("GlobalChatEnable"))
+        if(!getConfigChat().getBoolean("GlobalChatEnable") && event.getPlayer().hasPermission(permOnChat))
         {
             event.setFormat(Objects.requireNonNull(ChatColor.translateAlternateColorCodes('&',
                     Objects.requireNonNull(getConfigChat().getString("MessageFormat"))
-                            .replace("%PREFIX", Objects.requireNonNull(prefix))
+                            .replace("%PREFIX", prefix)
                             .replace("%PLAYER", event.getPlayer().getName())
-                            .replace("%SUFFIX", Objects.requireNonNull(suffix))
+                            .replace("%SUFFIX", suffix)
                             .replace("%MESSAGE", event.getMessage()))));
+        }
+        else if(getConfigChat().getBoolean("GlobalChatEnable") && event.getPlayer().hasPermission(permOnLocalChat)
+                && event.getMessage().charAt(0) == Objects.requireNonNull(getConfigChat().getString("SymbolGlobalChat")).charAt(0))
+        {
+            for(Entity entity:event.getPlayer().getNearbyEntities(getConfigChat().getInt("rangeChat"), 319, getConfigChat().getInt("rangeChat")))
+            {
+                if(entity instanceof Player) {
+                    entity.sendMessage(Objects.requireNonNull(ChatColor.translateAlternateColorCodes('&',
+                                            Objects.requireNonNull(getConfigChat().getString("LocalChatFormat"))
+                                                    .replace("%PREFIX", prefix))
+                                    .replace("%PLAYER", event.getPlayer().getName())
+                                    .replace("%SUFFIX", suffix))
+                            .replace("%MESSAGE", event.getMessage()));
+                }
+            }
+        }
+        else if(getConfigChat().getBoolean("GlobalChatEnable") && event.getPlayer().hasPermission(permOnGlobalChat))
+        {
+            event.setFormat(Objects.requireNonNull(ChatColor.translateAlternateColorCodes('&',
+                    Objects.requireNonNull(getConfigChat().getString("GlobalChatFormat"))
+                            .replace("%PREFIX", prefix)
+                            .replace("%PLAYER", event.getPlayer().getName())
+                            .replace("%SUFFIX", suffix)
+                            .replace("%MESSAGE", event.getMessage()))));
+        }
+        else
+        {
+            event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    Objects.requireNonNull(getConfigChat().getString("DontHavePermission"))
+                            .replace("%PREFIX", prefix)
+                            .replace("%PLAYER", event.getPlayer().getName())
+                            .replace("%SUFFIX", suffix)
+                            .replace("%MESSAGE", event.getMessage())));
         }
     }
 }

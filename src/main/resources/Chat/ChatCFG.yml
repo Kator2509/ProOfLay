@@ -2,6 +2,9 @@ GlobalChatEnable: false
 #If global is enabled, there working with local chat on range.
 #Default range 150.
 rangeChat: 150
+#Can't be empty! If you don't use global and local chat disabled that.
+SymbolGlobalChat: "!"
+#%PREFIX %PLAYER %SUFFIX %MESSAGE
 ConsoleSenderFormat: "&c[CONSOLE]: &3%MESSAGE"
 MessageFormat: "&7%PREFIX%PLAYER&f%SUFFIX: %MESSAGE"
 GlobalChatFormat: "&2[G] &7%PREFIX%PLAYER&f%SUFFIX: %MESSAGE"
