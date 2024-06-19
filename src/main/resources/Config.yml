@@ -1,3 +1,4 @@
+#Plugin inherits LuckyPerms and WorldEdit with WorldGuardian.
 ChatModule: true
 RandomTeleport: true
 JoinMessage: true

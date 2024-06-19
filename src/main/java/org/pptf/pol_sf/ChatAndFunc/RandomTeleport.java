@@ -24,10 +24,12 @@ import java.util.Random;
 import static org.bukkit.plugin.java.JavaPlugin.getPlugin;
 
 public class RandomTeleport implements CommandExecutor {
-    public static File rtpFile = new File(getPlugin(PoL_SF.class).getDataFolder(), "rtp/rtpCFG.yml"),
-    rtpMess = new File(getPlugin(PoL_SF.class).getDataFolder(), "rtp/rtpMessage.yml");
-    public static FileConfiguration rtpCFG, rtpMessage;
-    private final Permission rtp = new Permission("PoL.rtp"), rtpPlayer = new Permission("PoL.rtp.Player"), rtpNoCooldown = new Permission("PoL.rtp.NoCooldown");
+    private static final File rtpFile = new File(getPlugin(PoL_SF.class).getDataFolder(), "rtp/rtpCFG.yml");
+    private static final File rtpMess = new File(getPlugin(PoL_SF.class).getDataFolder(), "rtp/rtpMessage.yml");
+    private static FileConfiguration rtpCFG, rtpMessage;
+    private final Permission rtp = new Permission("PoL.rtp"),
+            rtpPlayer = new Permission("PoL.rtp.Player"),
+            rtpNoCooldown = new Permission("PoL.rtp.NoCooldown");
     private final Random random = new Random();
     private final HashMap<String, Long> cooldown = new HashMap<>();
 
@@ -129,25 +131,25 @@ public class RandomTeleport implements CommandExecutor {
                                 .replace("%SENDER", sender.getName()))));
                 return true;
             }
-        }
-        else if(isCooldown(sender.getName(), rtpCFG.getInt("TimeCooldown")) && sender instanceof Player)
+            return true;
+        } else if(isCooldown(sender.getName(), rtpCFG.getInt("TimeCooldown")) && sender instanceof Player)
         {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     Objects.requireNonNull(Objects.requireNonNull(getRtpMessage().get("TimeCooldownMessage")).toString()
                             .replace("%TIME", getCooldownValue(sender.getName(), 20))
                             .replace("%SENDER", sender.getName()))));
+            return true;
         } else if (!(sender instanceof Player)) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     Objects.requireNonNull(Objects.requireNonNull(getRtpMessage().get("IfSenderConsole")).toString())));
             return true;
-        }
-        else if(args.length > 1 && sender.hasPermission(rtpPlayer))
+        } else if(args.length > 1 && sender.hasPermission(rtpPlayer))
         {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     Objects.requireNonNull(Objects.requireNonNull(getRtpMessage().get("ToManyArguments")).toString()
                             .replace("%SENDER", sender.getName()))));
             return true;
-        } else {
+        } else if (!sender.hasPermission(rtpPlayer) || !sender.hasPermission(rtp)){
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     Objects.requireNonNull(Objects.requireNonNull(getRtpMessage().get("DontHavePermission")).toString()
                             .replace("%SENDER", sender.getName()))));

@@ -97,6 +97,7 @@ public final class PoL_SF extends JavaPlugin implements Listener, CommandExecuto
             Join.reloadCFGJoin();
             RegisterMethod.reloadRegister();
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("ReloadMessage"))));
+            return true;
         }
         else if(args.length == 0 || args.length > 2)
         {
@@ -106,7 +107,8 @@ public final class PoL_SF extends JavaPlugin implements Listener, CommandExecuto
         {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("DontHavePermission"))
                     .replace("%SENDER", sender.getName())));
+            return true;
         }
-        return true;
+        return false;
     }
 }
