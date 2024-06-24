@@ -22,11 +22,28 @@ permissions:
     default: op
     description: All permission plugin.
     children:
+      PoL.Chat.*: true
       PoL.rtp: true
       PoL.rtp.Player: true
       PoL.NoCooldown: true
       PoL.motd: true
       PoL.reload: true
+  PoL.Chat.*:
+    default: op
+    description: All Permission for chat.
+    children:
+      PoL.Chat.Global: true
+      PoL.Chat.Local: true
+      PoL.Chat.Trade: true
+  Pol.Chat.Global:
+    default: op
+    description: Permission for global chat.
+  PoL.Chat.Local:
+    default: op
+    description: Permission for local chat.
+  PoL.Chat.Trade:
+    default: op
+    description: Permission for trade chat.
   PoL.rtp:
     default: op
     description: Random teleport in the world.

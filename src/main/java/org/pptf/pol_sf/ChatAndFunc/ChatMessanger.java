@@ -4,12 +4,12 @@ import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.user.User;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventException;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -26,9 +26,13 @@ public class ChatMessanger extends ChatConfig implements Listener, CommandExecut
     and if enabled local or global, need get him permission on their chat.
      */
     Permission permOnChat = new Permission("PoL.Chat"), /*Permission on chat*/
-            permOnGlobalChat = new Permission("PoL.Chat.Global"), /*Permission on global chat if that enable*/
-            permOnLocalChat = new Permission("PoL.Chat.Local"), /*Permission on local chat if that enable*/
+            permOnGlobalChat = new Permission("PoL.Chat.Global"), /*Permission on global chat*/
+            permOnLocalChat = new Permission("PoL.Chat.Local"), /*Permission on local chat*/
+            permOnTradeChat = new Permission("PoL.Chat.Trade"), /*Permission on trade chat*/
+            permOnAdminChat = new Permission("PoL.Chat.Admin"), /*Permission on admin chat*/
             permOnConsoleMessage = new Permission("PoL.say");
+
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args)
     {
@@ -84,13 +88,32 @@ public class ChatMessanger extends ChatConfig implements Listener, CommandExecut
                             .replace("%SUFFIX", suffix)
                             .replace("%MESSAGE", event.getMessage()))));
         }
-        else if(getConfigChat().getBoolean("GlobalChatEnable") && event.getPlayer().hasPermission(permOnLocalChat)
+        else if(getConfigChat().getBoolean("GlobalChatEnable") && event.getPlayer().hasPermission(permOnGlobalChat)
                 && event.getMessage().charAt(0) == Objects.requireNonNull(getConfigChat().getString("SymbolGlobalChat")).charAt(0))
         {
-            for(Entity entity:event.getPlayer().getNearbyEntities(getConfigChat().getInt("rangeChat"), 319, getConfigChat().getInt("rangeChat")))
-            {
-                if(entity instanceof Player) {
-                    entity.sendMessage(Objects.requireNonNull(ChatColor.translateAlternateColorCodes('&',
+            event.setFormat(Objects.requireNonNull(ChatColor.translateAlternateColorCodes('&',
+                    Objects.requireNonNull(getConfigChat().getString("GlobalChatFormat"))
+                            .replace("%PREFIX", prefix)
+                            .replace("%PLAYER", event.getPlayer().getName())
+                            .replace("%SUFFIX", suffix)
+                            .replace("%MESSAGE", event.getMessage().substring(1)))));
+        }
+        else if(getConfigChat().getBoolean("TradeChatEnable") && event.getPlayer().hasPermission(permOnTradeChat)
+                && event.getMessage().charAt(0) == Objects.requireNonNull(getConfigChat().getString("SymbolTradeChat")).charAt(0))
+        {
+            event.setFormat(Objects.requireNonNull(ChatColor.translateAlternateColorCodes('&',
+                    Objects.requireNonNull(getConfigChat().getString("TradeChatFormat"))
+                            .replace("%PREFIX", prefix)
+                            .replace("%PLAYER", event.getPlayer().getName())
+                            .replace("%SUFFIX", suffix)
+                            .replace("%MESSAGE", event.getMessage().substring(1)))));
+        }
+        else if(getConfigChat().getBoolean("GlobalChatEnable") && event.getPlayer().hasPermission(permOnLocalChat))
+        {
+            Player playerSender = event.getPlayer();
+            for (Player player:Bukkit.getOnlinePlayers()) {
+                if (player.getLocation().distance(playerSender.getLocation()) <= getConfigChat().getInt("rangeChat")) {
+                    player.sendMessage(Objects.requireNonNull(ChatColor.translateAlternateColorCodes('&',
                                             Objects.requireNonNull(getConfigChat().getString("LocalChatFormat"))
                                                     .replace("%PREFIX", prefix))
                                     .replace("%PLAYER", event.getPlayer().getName())
@@ -98,15 +121,13 @@ public class ChatMessanger extends ChatConfig implements Listener, CommandExecut
                             .replace("%MESSAGE", event.getMessage()));
                 }
             }
-        }
-        else if(getConfigChat().getBoolean("GlobalChatEnable") && event.getPlayer().hasPermission(permOnGlobalChat))
-        {
-            event.setFormat(Objects.requireNonNull(ChatColor.translateAlternateColorCodes('&',
-                    Objects.requireNonNull(getConfigChat().getString("GlobalChatFormat"))
-                            .replace("%PREFIX", prefix)
+            Bukkit.getConsoleSender().sendMessage(Objects.requireNonNull(ChatColor.translateAlternateColorCodes('&',
+                                    Objects.requireNonNull(getConfigChat().getString("LocalChatFormat"))
+                                            .replace("%PREFIX", prefix))
                             .replace("%PLAYER", event.getPlayer().getName())
-                            .replace("%SUFFIX", suffix)
-                            .replace("%MESSAGE", event.getMessage()))));
+                            .replace("%SUFFIX", suffix))
+                    .replace("%MESSAGE", event.getMessage()));
+            event.setCancelled(true);
         }
         else
         {
@@ -116,6 +137,7 @@ public class ChatMessanger extends ChatConfig implements Listener, CommandExecut
                             .replace("%PLAYER", event.getPlayer().getName())
                             .replace("%SUFFIX", suffix)
                             .replace("%MESSAGE", event.getMessage())));
+            event.setCancelled(true);
         }
     }
 }
