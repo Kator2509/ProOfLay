@@ -1,9 +1,0 @@
-#Permission
-#JoinMessage.player
-#JoinMessage.admin
-JoinMessage:
-  player: "%PLAYER join===>"
-  admin: "%PLAYER admin join===o>"
-LeaveMessage:
-  player: "%PLAYER left===>"
-  admin: "%PLAYER admin left===o>"
