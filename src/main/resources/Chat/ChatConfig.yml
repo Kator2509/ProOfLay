@@ -1,16 +1,18 @@
-GlobalChatEnable: true
-#If you don't use that, please disable global and local chat.
-SymbolGlobalChat: "!"
-TradeChatEnable: true
-#Symbol for trade Chat.
-SymbolTradeChat: "@"
+localChatEnable: true
+Chats:
+  Trade:
+    Symbol: "@"
+    Permission: "trade"
+    Format: "test"
+  Global:
+    Symbol: "!"
+    Permission: "PoL.Chat.Global"
+    Format: "&2[G] &7%PREFIX%PLAYER&f%SUFFIX: %MESSAGE"
 #If global is enabled, there working with local chat on range.
 #Default range 150.
 rangeChat: 150
 #%PREFIX %PLAYER %SUFFIX %MESSAGE
 ConsoleSenderFormat: "&c[CONSOLE]: &3%MESSAGE"
 MessageFormat: "&7%PREFIX%PLAYER&f%SUFFIX: %MESSAGE"
-GlobalChatFormat: "&2[G] &7%PREFIX%PLAYER&f%SUFFIX: %MESSAGE"
 LocalChatFormat: "&9[L] &7%PREFIX%PLAYER&f%SUFFIX: %MESSAGE"
-TradeChatFormat: "&6[T] &7%PREFIX%PLAYER&f%SUFFIX: %MESSAGE"
 DontHavePermission: "&cYou don't have permission."

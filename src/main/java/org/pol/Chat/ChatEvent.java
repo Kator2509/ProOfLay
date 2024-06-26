@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,20 +16,11 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
+import java.util.*;
 
 public class ChatEvent extends ChatConfig implements Listener, CommandExecutor
 {
-    /*
-    If you want to get a permission to player need get him Chat permission
-    and if enabled local or global, need get him permission on their chat.
-     */
-    Permission permOnChat = new Permission("PoL.Chat"), /*Permission on chat*/
-            permOnGlobalChat = new Permission("PoL.Chat.Global"), /*Permission on global chat*/
-            permOnLocalChat = new Permission("PoL.Chat.Local"), /*Permission on local chat*/
-            permOnTradeChat = new Permission("PoL.Chat.Trade"), /*Permission on trade chat*/
-            permOnAdminChat = new Permission("PoL.Chat.Admin"), /*Permission on admin chat*/
-            permOnConsoleMessage = new Permission("PoL.say");
+    Permission permOnConsoleMessage = new Permission("PoL.say");
 
 
     @Override
@@ -68,6 +60,7 @@ public class ChatEvent extends ChatConfig implements Listener, CommandExecutor
         User user = Objects.requireNonNull(ap).getUserManager().getUser(event.getPlayer().getName());
         String prefix = Objects.requireNonNull(user).getCachedData().getMetaData().getPrefix();
         String suffix = Objects.requireNonNull(user).getCachedData().getMetaData().getSuffix();
+        String message = event.getMessage(), PlayerName = event.getPlayer().getName();
         if(prefix == null)
         {
             prefix = "";
@@ -76,6 +69,63 @@ public class ChatEvent extends ChatConfig implements Listener, CommandExecutor
         {
             suffix = "";
         }
+
+        ConfigurationSection sec = getConfigChat().getConfigurationSection("Chats");
+        try {
+            for (String key : sec.getKeys(false)) {
+                if (Objects.requireNonNull(getConfigChat().getString("Chats." + key + ".Symbol")).charAt(0) == message.charAt(0)) {
+                    if (event.getPlayer().hasPermission(Objects.requireNonNull(getConfigChat().getString("Chats." + key + ".Permission")))) {
+                        for (Player player : Bukkit.getOnlinePlayers()) {
+                            if (player.hasPermission(Objects.requireNonNull(getConfigChat().getString("Chats." + key + ".Permission")))) {
+                                player.sendMessage(Objects.requireNonNull(translateColor(
+                                        Objects.requireNonNull(Objects.requireNonNull(getConfigChat().getString("Chats." + key + "Format"))
+                                                .replace("%PREFIX", prefix)
+                                                .replace("%PLAYER", PlayerName)
+                                                .replace("%SUFFIX", suffix)
+                                                .replace("%MESSAGE", message)))));
+                            }
+                        }
+                    } else {
+                        event.getPlayer().sendMessage(Objects.requireNonNull(translateColor(getConfigChat().getString("DontHavePermission"))
+                        ));
+                    }
+                    event.setCancelled(true);
+                }
+            }
+        } catch (NullPointerException e)
+        {
+            e.printStackTrace();
+            //Need add a message about error with config for user.
+        }
+
+
+
+
+
+        /*
+        if(getConfigChat().getBoolean("LocalChatEnable") && event.getPlayer().hasPermission(permOnLocalChat))
+        {
+            Player playerSender = event.getPlayer();
+            for (Player player:Bukkit.getOnlinePlayers()) {
+                if (player.getLocation().distance(playerSender.getLocation()) <= getConfigChat().getInt("rangeChat")) {
+                    player.sendMessage(Objects.requireNonNull(ChatColor.translateAlternateColorCodes('&',
+                                            Objects.requireNonNull(getConfigChat().getString("LocalChatFormat"))
+                                                    .replace("%PREFIX", prefix))
+                                    .replace("%PLAYER", event.getPlayer().getName())
+                                    .replace("%SUFFIX", suffix))
+                            .replace("%MESSAGE", event.getMessage()));
+                }
+            }
+            Bukkit.getConsoleSender().sendMessage(Objects.requireNonNull(ChatColor.translateAlternateColorCodes('&',
+                                    Objects.requireNonNull(getConfigChat().getString("LocalChatFormat"))
+                                            .replace("%PREFIX", prefix))
+                            .replace("%PLAYER", event.getPlayer().getName())
+                            .replace("%SUFFIX", suffix))
+                    .replace("%MESSAGE", event.getMessage()));
+            event.setCancelled(true);
+        }
+
+
 
         if(!getConfigChat().getBoolean("GlobalChatEnable") && event.getPlayer().hasPermission(permOnChat))
         {
@@ -137,5 +187,11 @@ public class ChatEvent extends ChatConfig implements Listener, CommandExecutor
                             .replace("%MESSAGE", event.getMessage())));
             event.setCancelled(true);
         }
+        */
+    }
+
+    public String translateColor(String string)
+    {
+        return ChatColor.translateAlternateColorCodes('&', string);
     }
 }
