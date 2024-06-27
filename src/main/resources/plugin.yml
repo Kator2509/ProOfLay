@@ -11,7 +11,7 @@ description: Players function.
 commands:
   rtp:
     description: Random teleport or teleport a player.
-    usage: /<command> or /<command> [Player]
+    usage: /<command> [Player]
   pol:
     description: Reload configuration plugin.
     usage: /<command> reload
@@ -21,45 +21,33 @@ commands:
   motd:
     description: Daily message.
     usage: /<command>
+  msg:
+    description: Whisper message.
+    usage: /<command> [player] [message]
+  registerchat:
+    description: Register a new chat.
+    usage: /<command> [name] [symbol] [permission] [format]
 permissions:
   PoL.*:
-    default: op
     description: All permission plugin.
     children:
-      PoL.Chat.*: true
+      PoL.Chat.Local: true
       PoL.rtp: true
       PoL.rtp.Player: true
       PoL.NoCooldown: true
       PoL.motd: true
       PoL.reload: true
-  PoL.Chat.*:
-    default: op
-    description: All Permission for chat.
-    children:
-      PoL.Chat.Global: true
-      PoL.Chat.Local: true
-      PoL.Chat.Trade: true
-  Pol.Chat.Global:
-    default: op
-    description: Permission for global chat.
+  PoL.msg:
+    description: Whisper message.
   PoL.Chat.Local:
-    default: op
     description: Permission for local chat.
-  PoL.Chat.Trade:
-    default: op
-    description: Permission for trade chat.
   PoL.rtp:
-    default: op
     description: Random teleport in the world.
   PoL.rtp.Player:
-    default: op
     description: Random teleport Player in the world.
   PoL.rtp.NoCooldown:
-    default: op
     description: Random teleport with out cooldown.
   PoL.motd:
-    default: op
     description: Daily message.
   PoL.reload:
-    default: op
     description: Reload configuration plugin.

@@ -15,4 +15,7 @@ rangeChat: 150
 ConsoleSenderFormat: "&c[CONSOLE]: &3%MESSAGE"
 MessageFormat: "&7%PREFIX%PLAYER&f%SUFFIX: %MESSAGE"
 LocalChatFormat: "&9[L] &7%PREFIX%PLAYER&f%SUFFIX: %MESSAGE"
+MSGSenderFormat: "&6-> [%PLAYER] %MESSAGE"
+MSGMessageFormat: "&6<- [%PLAYER] %MESSAGE"
+PlayerIsOffline: "&cPlayer %PLAYER is offline"
 DontHavePermission: "&cYou don't have permission."

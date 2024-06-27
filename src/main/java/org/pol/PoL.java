@@ -13,6 +13,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.pol.Chat.ChatConfig;
 import org.pol.Chat.ChatEvent;
+import org.pol.Chat.ConstructorRegister.RegisterCommand;
+import org.pol.Chat.MSG;
 import org.pol.RTP.RTPEvent;
 
 import java.io.File;
@@ -38,10 +40,13 @@ public final class PoL extends JavaPlugin implements Listener, CommandExecutor {
         }
         config = YamlConfiguration.loadConfiguration(cfgFile);
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "o---------------------------o");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "| [PoL - Function] ");
         if(config.getBoolean("ChatModule")) {
             ChatConfig chatCFG = new ChatConfig();
             chatCFG.loadChatCFG(this);
             Objects.requireNonNull(this.getCommand("say")).setExecutor(new ChatEvent());
+            Objects.requireNonNull(this.getCommand("msg")).setExecutor(new MSG());
+            Objects.requireNonNull(this.getCommand("registerchat")).setExecutor(new RegisterCommand());
             Bukkit.getPluginManager().registerEvents(new ChatEvent(), this);
             Bukkit.getConsoleSender().sendMessage("§b| PoL-SF Chat load.");
         }

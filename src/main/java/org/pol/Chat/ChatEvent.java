@@ -60,7 +60,7 @@ public class ChatEvent extends ChatConfig implements Listener, CommandExecutor
         User user = Objects.requireNonNull(ap).getUserManager().getUser(event.getPlayer().getName());
         String prefix = Objects.requireNonNull(user).getCachedData().getMetaData().getPrefix();
         String suffix = Objects.requireNonNull(user).getCachedData().getMetaData().getSuffix();
-        String message = event.getMessage(), PlayerName = event.getPlayer().getName();
+        String message = event.getMessage(), playerName = event.getPlayer().getName();
         if(prefix == null)
         {
             prefix = "";
@@ -80,24 +80,57 @@ public class ChatEvent extends ChatConfig implements Listener, CommandExecutor
                                 player.sendMessage(Objects.requireNonNull(translateColor(
                                         Objects.requireNonNull(Objects.requireNonNull(getConfigChat().getString("Chats." + key + "Format"))
                                                 .replace("%PREFIX", prefix)
-                                                .replace("%PLAYER", PlayerName)
+                                                .replace("%PLAYER", playerName)
                                                 .replace("%SUFFIX", suffix)
                                                 .replace("%MESSAGE", message)))));
                             }
                         }
+                        Bukkit.getConsoleSender().sendMessage(Objects.requireNonNull(translateColor(
+                                Objects.requireNonNull(Objects.requireNonNull(getConfigChat().getString("Chats." + key + "Format"))
+                                        .replace("%PREFIX", prefix)
+                                        .replace("%PLAYER", playerName)
+                                        .replace("%SUFFIX", suffix)
+                                        .replace("%MESSAGE", message)))));
                     } else {
-                        event.getPlayer().sendMessage(Objects.requireNonNull(translateColor(getConfigChat().getString("DontHavePermission"))
-                        ));
+                        event.getPlayer().sendMessage(Objects.requireNonNull(translateColor(getConfigChat().getString("DontHavePermission"))));
                     }
                     event.setCancelled(true);
                 }
             }
+            if(getConfigChat().getBoolean("LocalChatEvent"))
+            {
+                Player playerSender = event.getPlayer();
+                for (Player player:Bukkit.getOnlinePlayers()) {
+                    if (player.getLocation().distance(playerSender.getLocation()) <= getConfigChat().getInt("rangeChat")) {
+                        player.sendMessage(Objects.requireNonNull(ChatColor.translateAlternateColorCodes('&',
+                                                Objects.requireNonNull(getConfigChat().getString("LocalChatFormat"))
+                                                        .replace("%PREFIX", prefix))
+                                                        .replace("%PLAYER", event.getPlayer().getName())
+                                                        .replace("%SUFFIX", suffix))
+                                                        .replace("%MESSAGE", message));
+                    }
+                }
+                Bukkit.getConsoleSender().sendMessage(Objects.requireNonNull(ChatColor.translateAlternateColorCodes('&',
+                                        Objects.requireNonNull(getConfigChat().getString("LocalChatFormat"))
+                                                .replace("%PREFIX", prefix))
+                                                .replace("%PLAYER", playerName)
+                                                .replace("%SUFFIX", suffix))
+                                                .replace("%MESSAGE", message));
+                event.setCancelled(true);
+            }
+            else {
+                event.setFormat(translateColor(Objects.requireNonNull(getConfigChat().getString("MessageFormat"))
+                        .replace("%PREFIX", prefix)
+                        .replace("%PLAYER", playerName)
+                        .replace("%SUFFIX", suffix)
+                        .replace("%MESSAGE", message)));
+            }
         } catch (NullPointerException e)
         {
             e.printStackTrace();
-            //Need add a message about error with config for user.
+            event.getPlayer().sendMessage("&c[PoL] - Error with config.");
+            event.setCancelled(true);
         }
-
 
 
 
@@ -190,7 +223,7 @@ public class ChatEvent extends ChatConfig implements Listener, CommandExecutor
         */
     }
 
-    public String translateColor(String string)
+    public static String translateColor(String string)
     {
         return ChatColor.translateAlternateColorCodes('&', string);
     }
