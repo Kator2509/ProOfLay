@@ -2,8 +2,8 @@ localChatEnable: true
 Chats:
   Trade:
     Symbol: "@"
-    Permission: "trade"
-    Format: "test"
+    Permission: "PoL.Chat.Trade"
+    Format: "&6[T] &7%PREFIX%PLAYER&f%SUFFIX: %MESSAGE"
   Global:
     Symbol: "!"
     Permission: "PoL.Chat.Global"
@@ -12,6 +12,8 @@ Chats:
 #Default range 150.
 rangeChat: 150
 #%PREFIX %PLAYER %SUFFIX %MESSAGE
+#Clear MessageIsEmpty if you want nothing to send.
+MessageIsEmpty: "&cYour message is empty!"
 ConsoleSenderFormat: "&c[CONSOLE]: &3%MESSAGE"
 MessageFormat: "&7%PREFIX%PLAYER&f%SUFFIX: %MESSAGE"
 LocalChatFormat: "&9[L] &7%PREFIX%PLAYER&f%SUFFIX: %MESSAGE"
