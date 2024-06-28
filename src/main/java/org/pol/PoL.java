@@ -58,14 +58,14 @@ public final class PoL extends JavaPlugin implements Listener, CommandExecutor {
             Bukkit.getConsoleSender().sendMessage("§b| PoL-SF rtp load.");
         }
         this.getServer().getPluginManager().registerEvents(this, this);
-        Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "| PoL-SF Start.");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "| [PoL] - Function Start.");
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "o---------------------------o");
     }
 
     @Override
     public void onDisable() {
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "o---------------------------o");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "| PoL-SF disabled.");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "| [PoL] - Function disabled.");
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "o---------------------------o");
     }
 

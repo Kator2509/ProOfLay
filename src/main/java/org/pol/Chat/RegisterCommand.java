@@ -16,10 +16,15 @@ public class RegisterCommand extends ChatConfig implements CommandExecutor, Tran
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         try {
             if(args.length == 4 && sender.hasPermission(permAddChat)) {
-                String format = args[3], symbol = args[1];
-                getConfigChat().set("Chats." + args[0] + ".Symbol", symbol);
-                getConfigChat().set("Chats." + args[0] + ".Permission", args[2]);
-                getConfigChat().set("Chats." + args[0] + ".Format", format);
+                char symbol = args[1].charAt(0);
+                StringBuilder format = new StringBuilder();
+                for(int i = 3; i < args.length; i++)
+                {
+                    format.append(args[i]);
+                }
+                getConfigChat().set("Chats." + args[0] + ".Symbol", String.format("%c", symbol));
+                getConfigChat().set("Chats." + args[0] + ".Permission", String.format("%s", args[2]));
+                getConfigChat().set("Chats." + args[0] + ".Format", String.format("%s", format));
                 getConfigChat().save(getConfigChatFile());
                 reloadConfigChat();
                 sender.sendMessage(translateColor("&b[PoL] New chat - " + args[0] + " created with permission " +
