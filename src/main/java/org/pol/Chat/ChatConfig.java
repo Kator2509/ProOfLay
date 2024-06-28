@@ -28,6 +28,11 @@ public class ChatConfig
         return chatCFG;
     }
 
+    public static File getConfigChatFile()
+    {
+        return chatFile;
+    }
+
     public static void reloadConfigChat()
     {
         chatCFG = YamlConfiguration.loadConfiguration(chatFile);

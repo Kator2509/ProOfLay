@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-public class ChatEvent extends ChatConfig implements Listener, CommandExecutor
+public class ChatEvent extends ChatConfig implements Listener, CommandExecutor, TranslateColor
 {
     Permission permOnConsoleMessage = new Permission("PoL.say");
 
@@ -105,17 +105,17 @@ public class ChatEvent extends ChatConfig implements Listener, CommandExecutor
                             player.sendMessage(Objects.requireNonNull(ChatColor.translateAlternateColorCodes('&',
                                                     Objects.requireNonNull(getConfigChat().getString("LocalChatFormat"))
                                                             .replace("%PREFIX", prefix))
-                                            .replace("%PLAYER", event.getPlayer().getName())
-                                            .replace("%SUFFIX", suffix))
-                                    .replace("%MESSAGE", message));
+                                                            .replace("%PLAYER", event.getPlayer().getName())
+                                                            .replace("%SUFFIX", suffix))
+                                                            .replace("%MESSAGE", message));
                         }
                     }
                     Bukkit.getConsoleSender().sendMessage(Objects.requireNonNull(ChatColor.translateAlternateColorCodes('&',
                                             Objects.requireNonNull(getConfigChat().getString("LocalChatFormat"))
                                                     .replace("%PREFIX", prefix))
-                                    .replace("%PLAYER", playerName)
-                                    .replace("%SUFFIX", suffix))
-                            .replace("%MESSAGE", message));
+                                                    .replace("%PLAYER", playerName)
+                                                    .replace("%SUFFIX", suffix))
+                                                    .replace("%MESSAGE", message));
                     event.setCancelled(true);
                 } else if (!event.isCancelled()) {
                     event.setFormat(translateColor(Objects.requireNonNull(getConfigChat().getString("MessageFormat"))
@@ -126,7 +126,7 @@ public class ChatEvent extends ChatConfig implements Listener, CommandExecutor
                 }
             } catch (NullPointerException e) {
                 e.printStackTrace();
-                event.getPlayer().sendMessage(translateColor("&c[PoL] - Error with config."));
+                event.getPlayer().sendMessage(translateColor("&c[PoL] - Config error!"));
                 event.setCancelled(true);
             }
         }
@@ -141,10 +141,5 @@ public class ChatEvent extends ChatConfig implements Listener, CommandExecutor
             }
             event.setCancelled(true);
         }
-    }
-
-    public static String translateColor(String string)
-    {
-        return ChatColor.translateAlternateColorCodes('&', string);
     }
 }

@@ -24,8 +24,8 @@ commands:
   msg:
     description: Whisper message.
     usage: /<command> [player] [message]
-  registerchat:
-    description: Register a new chat.
+  addChat:
+    description: Add a new chat.
     usage: /<command> [name] [symbol] [permission] [format]
 permissions:
   PoL.*:
@@ -51,3 +51,5 @@ permissions:
     description: Daily message.
   PoL.reload:
     description: Reload configuration plugin.
+  PoL.AddChat:
+    description: Add a new chat.

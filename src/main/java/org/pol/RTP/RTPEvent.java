@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import org.pol.Chat.TranslateColor;
 import org.pol.PoL;
 
 import java.io.File;
@@ -23,7 +24,7 @@ import java.util.Random;
 
 import static org.bukkit.plugin.java.JavaPlugin.getPlugin;
 
-public class RTPEvent implements CommandExecutor
+public class RTPEvent implements CommandExecutor, TranslateColor
 {
     private static final File rtpFile = new File(getPlugin(PoL.class).getDataFolder(), "rtp/rtpConfig.yml");
     private static final File rtpMess = new File(getPlugin(PoL.class).getDataFolder(), "rtp/rtpMessage.yml");
@@ -49,7 +50,7 @@ public class RTPEvent implements CommandExecutor
                 Y = block.getY() + 1;
             }
             ((Player) sender).teleport(new Location(worldSender, X, Y, Z));
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+            sender.sendMessage(translateColor(
                     Objects.requireNonNull(Objects.requireNonNull(getRtpMessage().get("TeleportedMessage")).toString()
                             .replace("%X", String.valueOf(X))
                             .replace("%Z", String.valueOf(Z))
@@ -74,14 +75,14 @@ public class RTPEvent implements CommandExecutor
                 if(rtpCFG.isBoolean("EnableTimeCooldown")) {
                     setCooldown(sender.getName());
                 }
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                sender.sendMessage(translateColor(
                         Objects.requireNonNull(Objects.requireNonNull(getRtpMessage().get("TeleportedMessage")).toString()
                                 .replace("%X", String.valueOf(X))
                                 .replace("%Z", String.valueOf(Z))
                                 .replace("%Y", String.valueOf(Y))
                                 .replace("%SENDER", sender.getName()))));
             } else {
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                sender.sendMessage(translateColor(
                         Objects.requireNonNull(Objects.requireNonNull(getRtpMessage().get("TryTeleportedInBlockWorld")).toString()
                                 .replace("%SENDER", sender.getName()))));
             }
@@ -103,14 +104,14 @@ public class RTPEvent implements CommandExecutor
                             Y = block.getY() + 1;
                         }
                         player.teleport(new Location(worldSender, X, Y, Z));
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        sender.sendMessage(translateColor(
                                 Objects.requireNonNull(Objects.requireNonNull(getRtpMessage().get("TeleportedMessageForPlayer")).toString()
                                         .replace("%X", String.valueOf(X))
                                         .replace("%Z", String.valueOf(Z))
                                         .replace("%Y", String.valueOf(Y))
                                         .replace("%PLAYER", player.getName())
                                         .replace("%SENDER", sender.getName()))));
-                        player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        player.sendMessage(translateColor(
                                 Objects.requireNonNull(Objects.requireNonNull(getRtpMessage().get("TeleportedMessageByPlayer")).toString()
                                         .replace("%X", String.valueOf(X))
                                         .replace("%Z", String.valueOf(Z))
@@ -118,7 +119,7 @@ public class RTPEvent implements CommandExecutor
                                         .replace("%PLAYER", player.getName())
                                         .replace("%SENDER", sender.getName()))));
                     } else {
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        sender.sendMessage(translateColor(
                                 Objects.requireNonNull(Objects.requireNonNull(getRtpMessage().get("TryTeleportedInBlockWorld")).toString()
                                         .replace("%PLAYER", player.getName())
                                         .replace("%SENDER", sender.getName()))));
@@ -126,7 +127,7 @@ public class RTPEvent implements CommandExecutor
                     return true;
                 }
             } catch (NullPointerException e) {
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                sender.sendMessage(translateColor(
                         Objects.requireNonNull(Objects.requireNonNull(getRtpMessage().get("PlayerOffline")).toString()
                                 .replace("%PLAYER", args[0])
                                 .replace("%SENDER", sender.getName()))));
@@ -135,23 +136,23 @@ public class RTPEvent implements CommandExecutor
             return true;
         } else if(isCooldown(sender.getName(), rtpCFG.getInt("TimeCooldown")) && sender instanceof Player)
         {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+            sender.sendMessage(translateColor(
                     Objects.requireNonNull(Objects.requireNonNull(getRtpMessage().get("TimeCooldownMessage")).toString()
                             .replace("%TIME", getCooldownValue(sender.getName(), 20))
                             .replace("%SENDER", sender.getName()))));
             return true;
         } else if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+            sender.sendMessage(translateColor(
                     Objects.requireNonNull(Objects.requireNonNull(getRtpMessage().get("IfSenderConsole")).toString())));
             return true;
         } else if(args.length > 1 && sender.hasPermission(rtpPlayer))
         {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+            sender.sendMessage(translateColor(
                     Objects.requireNonNull(Objects.requireNonNull(getRtpMessage().get("ToManyArguments")).toString()
                             .replace("%SENDER", sender.getName()))));
             return true;
         } else if (!sender.hasPermission(rtpPlayer) || !sender.hasPermission(rtp)){
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+            sender.sendMessage(translateColor(
                     Objects.requireNonNull(Objects.requireNonNull(getRtpMessage().get("DontHavePermission")).toString()
                             .replace("%SENDER", sender.getName()))));
             return true;
