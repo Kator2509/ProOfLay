@@ -32,7 +32,7 @@ public class ChatEvent extends ChatConfig implements Listener, CommandExecutor, 
             for (String arg : args) {
                 message.append(arg);
             }
-            Bukkit.broadcastMessage(Objects.requireNonNull(ChatColor.translateAlternateColorCodes('&',
+            Bukkit.broadcastMessage(Objects.requireNonNull(translateColor(
                     Objects.requireNonNull(Objects.requireNonNull(getConfigChat().getString("ConsoleSenderFormat"))
                             .replace("%SENDER", sender.getName())
                             .replace("%MESSAGE", message.toString())))));
@@ -40,7 +40,7 @@ public class ChatEvent extends ChatConfig implements Listener, CommandExecutor, 
         }
         else if(args.length != 0)
         {
-            sender.sendMessage(Objects.requireNonNull(ChatColor.translateAlternateColorCodes('&',
+            sender.sendMessage(Objects.requireNonNull(translateColor(
                     Objects.requireNonNull(getConfigChat().getString("DontHavePermission"))
                             .replace("%SENDER", sender.getName()))));
             return true;
@@ -110,7 +110,7 @@ public class ChatEvent extends ChatConfig implements Listener, CommandExecutor, 
                                                             .replace("%MESSAGE", message));
                         }
                     }
-                    Bukkit.getConsoleSender().sendMessage(Objects.requireNonNull(ChatColor.translateAlternateColorCodes('&',
+                    Bukkit.getConsoleSender().sendMessage(Objects.requireNonNull(translateColor(
                                             Objects.requireNonNull(getConfigChat().getString("LocalChatFormat"))
                                                     .replace("%PREFIX", prefix))
                                                     .replace("%PLAYER", playerName)

@@ -18,13 +18,10 @@ commands:
   say:
     description: Say from server in global.
     usage: /<command> [message]
-  motd:
-    description: Daily message.
-    usage: /<command>
   msg:
     description: Whisper message.
     usage: /<command> [player] [message]
-  addChat:
+  chat:
     description: Add a new chat.
     usage: /<command> [name] [symbol] [permission] [format]
 permissions:
@@ -36,7 +33,6 @@ permissions:
       PoL.rtp: true
       PoL.rtp.Player: true
       PoL.NoCooldown: true
-      PoL.motd: true
       PoL.reload: true
   PoL.msg:
     description: Whisper message.
@@ -48,8 +44,6 @@ permissions:
     description: Random teleport Player in the world.
   PoL.rtp.NoCooldown:
     description: Random teleport with out cooldown.
-  PoL.motd:
-    description: Daily message.
   PoL.reload:
     description: Reload configuration plugin.
   PoL.AddChat:

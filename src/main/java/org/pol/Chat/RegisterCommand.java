@@ -15,12 +15,16 @@ public class RegisterCommand extends ChatConfig implements CommandExecutor, Tran
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         try {
-            if(args.length == 4 && sender.hasPermission(permAddChat)) {
+            if(args.length >= 4 && sender.hasPermission(permAddChat)) {
                 char symbol = args[1].charAt(0);
                 StringBuilder format = new StringBuilder();
                 for(int i = 3; i < args.length; i++)
                 {
                     format.append(args[i]);
+                    if(i < args.length - 1)
+                    {
+                        format.append(" ");
+                    }
                 }
                 getConfigChat().set("Chats." + args[0] + ".Symbol", String.format("%c", symbol));
                 getConfigChat().set("Chats." + args[0] + ".Permission", String.format("%s", args[2]));
@@ -28,7 +32,7 @@ public class RegisterCommand extends ChatConfig implements CommandExecutor, Tran
                 getConfigChat().save(getConfigChatFile());
                 reloadConfigChat();
                 sender.sendMessage(translateColor("&b[PoL] New chat - " + args[0] + " created with permission " +
-                        args[2] + " on symbol '" + args[1] + "' with format: " + args[3]));
+                        args[2] + " on symbol '" + args[1] + "' with format: " + format));
                 return true;
             } else if(!sender.hasPermission(permAddChat)){
                 sender.sendMessage(translateColor(Objects.requireNonNull(getConfigChat().getString("DontHavePermission"))

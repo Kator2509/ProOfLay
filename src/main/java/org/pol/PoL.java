@@ -11,16 +11,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import org.pol.Chat.ChatConfig;
-import org.pol.Chat.ChatEvent;
-import org.pol.Chat.RegisterCommand;
-import org.pol.Chat.MSG;
+import org.pol.Chat.*;
 import org.pol.RTP.RTPEvent;
 
 import java.io.File;
 import java.util.Objects;
 
-public final class PoL extends JavaPlugin implements Listener, CommandExecutor {
+public final class PoL extends JavaPlugin implements Listener, CommandExecutor, TranslateColor {
 
     /*    _______       ____     .
     /    |       \     /    \    |
@@ -46,7 +43,7 @@ public final class PoL extends JavaPlugin implements Listener, CommandExecutor {
             chatCFG.loadChatCFG(this);
             Objects.requireNonNull(this.getCommand("say")).setExecutor(new ChatEvent());
             Objects.requireNonNull(this.getCommand("msg")).setExecutor(new MSG());
-            Objects.requireNonNull(this.getCommand("addChat")).setExecutor(new RegisterCommand());
+            Objects.requireNonNull(this.getCommand("chat")).setExecutor(new RegisterCommand());
             Bukkit.getPluginManager().registerEvents(new ChatEvent(), this);
             Bukkit.getConsoleSender().sendMessage("§b| PoL-SF Chat load.");
         }
@@ -83,16 +80,16 @@ public final class PoL extends JavaPlugin implements Listener, CommandExecutor {
             config = YamlConfiguration.loadConfiguration(cfgFile);
             RTPEvent.reloadRTPConfig();
             ChatConfig.reloadConfigChat();
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("ReloadMessage"))));
+            sender.sendMessage(translateColor(Objects.requireNonNull(config.getString("ReloadMessage"))));
             return true;
         }
-        else if(args.length == 0 || args.length > 2)
+        else if((args.length == 0 || args.length > 2) && sender.hasPermission(permReload))
         {
             return false;
         }
         else if(!sender.hasPermission(permReload))
         {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("DontHavePermission"))
+            sender.sendMessage(translateColor(Objects.requireNonNull(config.getString("DontHavePermission"))
                     .replace("%SENDER", sender.getName())));
             return true;
         }

@@ -2,8 +2,7 @@
 ChatModule: true
 RandomTeleport: true
 JoinMessage: true
-EnableRegisterMethod: false
 EnableMotd: true
 Motd: "Daily message!"
 ReloadMessage: "&3[PoL] Plugin reload."
-DontHavePermission: "&c[PoL] You don't have permission."
+DontHavePermission: "&c[PoL] You don't have a permission."
