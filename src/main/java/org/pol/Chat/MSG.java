@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class MSG extends ChatEvent implements CommandExecutor
+public class MSG extends ChatConfig implements CommandExecutor, TranslateColor
 {
     Permission msg = new Permission("PoL.msg");
     @Override
