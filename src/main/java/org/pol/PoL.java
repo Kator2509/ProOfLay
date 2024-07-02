@@ -12,7 +12,9 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.pol.Chat.*;
+import org.pol.Join.JoinEvent;
 import org.pol.Join.JoinQuitConfig;
+import org.pol.Join.QuitEvent;
 import org.pol.RTP.RTPEvent;
 
 import java.io.File;
@@ -52,6 +54,8 @@ public final class PoL extends JavaPlugin implements Listener, CommandExecutor, 
         {
             JoinQuitConfig jqc = new JoinQuitConfig();
             jqc.loadJoinQuit(this);
+            Bukkit.getPluginManager().registerEvents(new JoinEvent(), this);
+            Bukkit.getPluginManager().registerEvents(new QuitEvent(), this);
             Bukkit.getConsoleSender().sendMessage("§b| PoL-SF JoinQuit load.");
         }
         if(config.getBoolean("RandomTeleport"))

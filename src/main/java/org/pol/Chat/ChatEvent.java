@@ -19,7 +19,7 @@ import java.util.*;
 
 public class ChatEvent extends ChatConfig implements Listener, CommandExecutor, TranslateColor, LoaderAPI
 {
-    Permission permOnConsoleMessage = new Permission("PoL.say");
+    Permission permOnConsoleMessage = new Permission("PoL.say"), permOnLocalChat = new Permission("PoL.Chat.Local");
 
 
     @Override
@@ -96,7 +96,7 @@ public class ChatEvent extends ChatConfig implements Listener, CommandExecutor, 
                         event.setCancelled(true);
                     }
                 }
-                if (getConfigChat().getBoolean("localChatEnable") && !event.isCancelled()) {
+                if ((getConfigChat().getBoolean("localChatEnable") && !event.isCancelled()) && event.getPlayer().hasPermission(permOnLocalChat)) {
                     Player playerSender = event.getPlayer();
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         if (player.getLocation().distance(playerSender.getLocation()) <= getConfigChat().getInt("rangeChat")) {
