@@ -1,5 +1,6 @@
 package org.pol.Chat;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -33,9 +34,13 @@ public class RegisterCommand extends ChatConfig implements CommandExecutor, Tran
                 reloadConfigChat();
                 sender.sendMessage(translateColor("&b[PoL] New chat - " + args[0] + " created with permission " +
                         args[2] + " on symbol '" + args[1] + "' with format: " + format));
+                Bukkit.getConsoleSender().sendMessage(translateColor("&b[PoL] New chat - " + args[0] + " created with permission " +
+                        args[2] + " on symbol '" + args[1] + "' with format: " + format));
                 return true;
             } else if(!sender.hasPermission(permAddChat)){
                 sender.sendMessage(translateColor(Objects.requireNonNull(getConfigChat().getString("DontHavePermission"))
+                        .replace("%SENDER", sender.getName())));
+                Bukkit.getConsoleSender().sendMessage(translateColor(Objects.requireNonNull(getConfigChat().getString("DontHavePermission"))
                         .replace("%SENDER", sender.getName())));
                 return true;
             }

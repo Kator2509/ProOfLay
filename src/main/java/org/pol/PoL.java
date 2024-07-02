@@ -12,6 +12,7 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.pol.Chat.*;
+import org.pol.Join.JoinQuitConfig;
 import org.pol.RTP.RTPEvent;
 
 import java.io.File;
@@ -37,7 +38,7 @@ public final class PoL extends JavaPlugin implements Listener, CommandExecutor, 
         }
         config = YamlConfiguration.loadConfiguration(cfgFile);
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "o---------------------------o");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "| [PoL - Function] ");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "| [PoL] - Function ");
         if(config.getBoolean("ChatModule")) {
             ChatConfig chatCFG = new ChatConfig();
             chatCFG.loadChatCFG(this);
@@ -46,6 +47,12 @@ public final class PoL extends JavaPlugin implements Listener, CommandExecutor, 
             Objects.requireNonNull(this.getCommand("chat")).setExecutor(new RegisterCommand());
             Bukkit.getPluginManager().registerEvents(new ChatEvent(), this);
             Bukkit.getConsoleSender().sendMessage("§b| PoL-SF Chat load.");
+        }
+        if(config.getBoolean("JoinQuitMessage"))
+        {
+            JoinQuitConfig jqc = new JoinQuitConfig();
+            jqc.loadJoinQuit(this);
+            Bukkit.getConsoleSender().sendMessage("§b| PoL-SF JoinQuit load.");
         }
         if(config.getBoolean("RandomTeleport"))
         {
@@ -80,6 +87,7 @@ public final class PoL extends JavaPlugin implements Listener, CommandExecutor, 
             config = YamlConfiguration.loadConfiguration(cfgFile);
             RTPEvent.reloadRTPConfig();
             ChatConfig.reloadConfigChat();
+            JoinQuitConfig.reloadJoinQuit();
             sender.sendMessage(translateColor(Objects.requireNonNull(config.getString("ReloadMessage"))));
             return true;
         }

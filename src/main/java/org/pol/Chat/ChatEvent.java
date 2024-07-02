@@ -3,7 +3,6 @@ package org.pol.Chat;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.user.User;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,12 +12,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.permissions.Permission;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
+import org.pol.LoaderAPI;
 
 import java.util.*;
 
-public class ChatEvent extends ChatConfig implements Listener, CommandExecutor, TranslateColor
+public class ChatEvent extends ChatConfig implements Listener, CommandExecutor, TranslateColor, LoaderAPI
 {
     Permission permOnConsoleMessage = new Permission("PoL.say");
 
@@ -29,8 +28,12 @@ public class ChatEvent extends ChatConfig implements Listener, CommandExecutor, 
         if(!(sender instanceof Player) && args.length != 0 || (sender.hasPermission(permOnConsoleMessage) && args.length != 0))
         {
             StringBuilder message = new StringBuilder();
-            for (String arg : args) {
-                message.append(arg);
+            for (int i = 0; i < args.length; i++) {
+                message.append(args[i]);
+                if(i < args.length - 1)
+                {
+                    message.append(" ");
+                }
             }
             Bukkit.broadcastMessage(Objects.requireNonNull(translateColor(
                     Objects.requireNonNull(Objects.requireNonNull(getConfigChat().getString("ConsoleSenderFormat"))
@@ -51,13 +54,8 @@ public class ChatEvent extends ChatConfig implements Listener, CommandExecutor, 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event)
     {
-        RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
-        LuckPerms ap = null;
-        if(provider != null)
-        {
-            ap = provider.getProvider();
-        }
-        User user = Objects.requireNonNull(ap).getUserManager().getUser(event.getPlayer().getName());
+        LuckPerms ap = loadLP();
+        User user = Objects.requireNonNull(ap).getUserManager().getUser(event.getPlayer().getUniqueId());
         String prefix = Objects.requireNonNull(user).getCachedData().getMetaData().getPrefix();
         String suffix = Objects.requireNonNull(user).getCachedData().getMetaData().getSuffix();
         String message = event.getMessage(), playerName = event.getPlayer().getName();
@@ -102,7 +100,7 @@ public class ChatEvent extends ChatConfig implements Listener, CommandExecutor, 
                     Player playerSender = event.getPlayer();
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         if (player.getLocation().distance(playerSender.getLocation()) <= getConfigChat().getInt("rangeChat")) {
-                            player.sendMessage(Objects.requireNonNull(ChatColor.translateAlternateColorCodes('&',
+                            player.sendMessage(Objects.requireNonNull(translateColor(
                                                     Objects.requireNonNull(getConfigChat().getString("LocalChatFormat"))
                                                             .replace("%PREFIX", prefix))
                                                             .replace("%PLAYER", event.getPlayer().getName())

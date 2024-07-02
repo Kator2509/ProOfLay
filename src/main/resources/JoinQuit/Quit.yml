@@ -1,0 +1,3 @@
+Quit:
+  Player: "%PREFIX%PLAYER%SUFFIX left the game!"
+  Admin: "%PREFIX%PLAYER%SUFFIX admin left the game!"
