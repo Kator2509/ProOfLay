@@ -23,16 +23,21 @@ commands:
     usage: /<command> [player] [message]
   chat:
     description: Add a new chat.
-    usage: /<command> [name] [symbol] [permission] [format]
+    usage: /<command> [delete/create] [name] [symbol] [permission] [format]
+  motd:
+    description: Daily message.
+    usage: /<command>
 permissions:
   PoL.*:
     description: All permission plugin.
     children:
-      PoL.addChat: true
+      PoL.Chat.Delete: true
+      PoL.Chat.Create: true
       PoL.Chat.Local: true
       PoL.rtp: true
       PoL.rtp.Player: true
       PoL.NoCooldown: true
+      PoL.motd: true
       PoL.reload: true
   PoL.msg:
     description: Whisper message.
@@ -46,5 +51,9 @@ permissions:
     description: Random teleport with out cooldown.
   PoL.reload:
     description: Reload configuration plugin.
-  PoL.AddChat:
+  PoL.motd:
+    description: Daily message.
+  PoL.Chat.Delete:
+    description: Delete a chat.
+  PoL.Chat.Create:
     description: Add a new chat.

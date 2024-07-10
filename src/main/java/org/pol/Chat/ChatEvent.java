@@ -19,8 +19,7 @@ import java.util.*;
 
 public class ChatEvent extends ChatConfig implements Listener, CommandExecutor, TranslateColor, LoaderAPI
 {
-    Permission permOnConsoleMessage = new Permission("PoL.say"), permOnLocalChat = new Permission("PoL.Chat.Local");
-
+    private final Permission permOnConsoleMessage = new Permission("PoL.say"), permOnLocalChat = new Permission("PoL.Chat.Local");
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args)

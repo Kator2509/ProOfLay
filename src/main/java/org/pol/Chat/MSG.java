@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public class MSG extends ChatConfig implements CommandExecutor, TranslateColor
 {
-    Permission msg = new Permission("PoL.msg");
+    private final Permission msg = new Permission("PoL.msg");
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(args.length >= 2 && sender.hasPermission(msg))

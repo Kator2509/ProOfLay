@@ -8,12 +8,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.pol.Chat.TranslateColor;
 import org.pol.LoaderAPI;
+import org.pol.Motd;
 
 import java.util.Objects;
 
 public class JoinEvent extends JoinQuitConfig implements Listener, TranslateColor, LoaderAPI
 {
     String prefix, suffix;
+    Motd motd;
     @EventHandler
     public void onJoin(PlayerJoinEvent event)
     {

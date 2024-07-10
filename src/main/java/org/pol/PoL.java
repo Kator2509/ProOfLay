@@ -31,8 +31,8 @@ public final class PoL extends JavaPlugin implements Listener, CommandExecutor, 
     /    |             \____/    |________
     */
 
-    public File cfgFile = new File(this.getDataFolder(), "Config.yml");
-    public static FileConfiguration config;
+    private final File cfgFile = new File(this.getDataFolder(), "Config.yml");
+    private static FileConfiguration config;
     @Override
     public void onEnable() {
         if(!cfgFile.exists()) {
@@ -47,6 +47,7 @@ public final class PoL extends JavaPlugin implements Listener, CommandExecutor, 
             Objects.requireNonNull(this.getCommand("say")).setExecutor(new ChatEvent());
             Objects.requireNonNull(this.getCommand("msg")).setExecutor(new MSG());
             Objects.requireNonNull(this.getCommand("chat")).setExecutor(new RegisterCommand());
+            Objects.requireNonNull(this.getCommand("motd")).setExecutor(new Motd());
             Bukkit.getPluginManager().registerEvents(new ChatEvent(), this);
             Bukkit.getConsoleSender().sendMessage("§b| PoL-SF Chat load.");
         }

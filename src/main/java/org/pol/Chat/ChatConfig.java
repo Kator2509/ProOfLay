@@ -11,7 +11,7 @@ import static org.bukkit.plugin.java.JavaPlugin.getPlugin;
 
 public class ChatConfig
 {
-    public static File chatFile = new File(getPlugin(PoL.class).getDataFolder(), "Chat/ChatConfig.yml");
+    private final static File chatFile = new File(getPlugin(PoL.class).getDataFolder(), "Chat/ChatConfig.yml");
     public static FileConfiguration chatCFG = YamlConfiguration.loadConfiguration(chatFile);
 
     public void loadChatCFG(Plugin plugin)

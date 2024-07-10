@@ -13,9 +13,4 @@ public class Motd implements CommandExecutor, TranslateColor
 
         return false;
     }
-
-    public void DailyMessage()
-    {
-
-    }
 }

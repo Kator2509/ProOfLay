@@ -11,7 +11,7 @@ import static org.bukkit.plugin.java.JavaPlugin.getPlugin;
 
 public class JoinQuitConfig
 {
-    public static File configJoin = new File(getPlugin(PoL.class).getDataFolder(), "JoinQuit/Join.yml"),
+    private final static File configJoin = new File(getPlugin(PoL.class).getDataFolder(), "JoinQuit/Join.yml"),
     configQuit = new File(getPlugin(PoL.class).getDataFolder(), "JoinQuit/Quit.yml");
 
     public static FileConfiguration joinConfig = YamlConfiguration.loadConfiguration(configJoin),
