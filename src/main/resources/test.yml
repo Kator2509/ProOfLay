@@ -1,0 +1,37 @@
+test:
+  TestString: "TESTMESSAGE"
+  TestChar: t
+  TestBool: true
+  TestInteger: 10
+  TestDouble: 10.20
+  TestObject: 10Object
+test2:
+  TestArray: ["Item1", "Item2"]
+  TestArray2:
+    - "Item1"
+    - "Item2"
+  TestArray3: [1, 10, 20]
+  TestArray4:
+    - 1
+    - 12
+    - 22
+  TestArray5: [1.20, 10.20, 20.20]
+  TestArray6:
+    - 1.20
+    - 10.20
+    - 20.20
+  TestArray7: [true, false, true]
+  TestArray8:
+    - false
+    - true
+    - false
+  TestArray9: ['1', '2', '3']
+  TestArray10:
+    - '3'
+    - '2'
+    - '1'
+test3:
+  TestKey:
+    TestKey2: true
+    TestKey3: false
+test4: "Message"
