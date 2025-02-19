@@ -1,4 +1,4 @@
-package org.graphic.test;
+package org.graphic.CConstructor;
 
 import com.google.common.base.Preconditions;
 import org.bukkit.ChatColor;
@@ -9,12 +9,11 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.List;
 
 public abstract class MemorySpace implements MemoryInterface
 {
-    private Yaml yaml = new Yaml();
+    private final Yaml yaml = new Yaml();
     protected FileInputStream fileInputStream;
     private LinkedHashMap<String, Object> data;
     private String pathFile;

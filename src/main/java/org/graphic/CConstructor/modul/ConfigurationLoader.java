@@ -1,10 +1,10 @@
-package org.graphic.test.Moduls;
+package org.graphic.CConstructor.modul;
 
 import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
-import org.graphic.test.Configuration;
+import org.graphic.CConstructor.Configuration;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;

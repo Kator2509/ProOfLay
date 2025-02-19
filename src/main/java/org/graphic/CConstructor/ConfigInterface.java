@@ -1,4 +1,4 @@
-package org.graphic.test;
+package org.graphic.CConstructor;
 
 import org.jetbrains.annotations.NotNull;
 

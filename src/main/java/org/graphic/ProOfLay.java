@@ -3,8 +3,8 @@ package org.graphic;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.graphic.test.Configuration;
-import org.graphic.test.Moduls.ConfigurationLoader;
+import org.graphic.CConstructor.Configuration;
+import org.graphic.CConstructor.modul.ConfigurationLoader;
 
 public final class ProOfLay extends JavaPlugin
 {
