@@ -8,6 +8,8 @@ import org.graphic.CConstructor.modul.ConfigurationLoader;
 
 public final class ProOfLay extends JavaPlugin
 {
+    public static ProOfLay root;
+
     @Override
     public void onEnable()
     {
@@ -22,5 +24,9 @@ public final class ProOfLay extends JavaPlugin
     public void onDisable()
     {
 
+    }
+
+    public static ProOfLay getRoot() {
+        return root;
     }
 }
