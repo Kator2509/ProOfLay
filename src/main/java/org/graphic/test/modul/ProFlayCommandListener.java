@@ -1,19 +1,26 @@
 package org.graphic.test.modul;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.graphic.ProOfLay;
 import org.jetbrains.annotations.NotNull;
 
-public class ProFlayCommandListener implements CommandExecutor {
+import java.util.HashMap;
+import java.util.Map;
+
+public class ProFlayCommandListener
+{
+    Map<String, ProFlayCommand> list = new HashMap<String, ProFlayCommand>();
+
     public ProFlayCommandListener()
     {
-        ProOfLay.getRoot().getCommand("ProFlay").setExecutor(this);
+        register();
     }
 
-    @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+    public boolean register()
+    {
         return false;
+    }
+
+    public ProFlayCommand getProFlayCommand(@NotNull String name)
+    {
+        return list.get(name);
     }
 }
