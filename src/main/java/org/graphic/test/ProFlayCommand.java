@@ -1,4 +1,4 @@
-package org.graphic.test.modul;
+package org.graphic.test;
 
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -33,5 +33,15 @@ public abstract class ProFlayCommand
     public boolean registerAlias()
     {
         return false;
+    }
+
+    public String getName()
+    {
+        return this.name;
+    }
+
+    public String getLabel()
+    {
+        return this.label;
     }
 }

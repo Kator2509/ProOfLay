@@ -1,7 +1,6 @@
 package org.graphic.test;
 
 import org.bukkit.command.CommandSender;
-import org.graphic.test.modul.ProFlayCommand;
 import org.jetbrains.annotations.NotNull;
 
 public class TestCommand extends ProFlayCommand

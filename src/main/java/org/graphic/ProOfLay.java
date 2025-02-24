@@ -7,23 +7,31 @@ import org.graphic.CConstructor.modul.ConfigurationLoader;
 
 public final class ProOfLay extends JavaPlugin
 {
-    public static ProOfLay root;
+    private static ProOfLay root;
+    private boolean enable = false;
 
     @Override
     public void onEnable()
     {
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "[ProFlay] Trying to load a Configuration module.");
         ConfigurationLoader.registerPoLConfigs(this);
+        Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "[ProFlay] Trying to load a Command module.");
 
+        enable = true;
     }
 
     @Override
     public void onDisable()
     {
-
+        enable = false;
     }
 
     public static ProOfLay getRoot() {
         return root;
+    }
+
+    public boolean isEnableProFlay()
+    {
+        return this.enable;
     }
 }
