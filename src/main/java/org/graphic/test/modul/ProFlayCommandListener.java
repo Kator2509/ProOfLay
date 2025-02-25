@@ -13,11 +13,17 @@ public class ProFlayCommandListener extends ProFlayCommandLoader implements Comm
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, @NotNull String[] strings) {
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(!this.list.containsKey(label))
         {
             return false;
         }
+
+        if(this.list.containsKey(label) && getProFlayCommand(label) != null)
+        {
+            getProFlayCommand(label).run(commandSender, label, "/" + label, args);
+        }
+
         return false;
     }
 }

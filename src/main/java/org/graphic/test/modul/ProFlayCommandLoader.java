@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class ProFlayCommandLoader
 {
-    Map<String, ProFlayCommand> list = new HashMap<String, ProFlayCommand>();
+    static Map<String, ProFlayCommand> list = new HashMap<String, ProFlayCommand>();
 
     public ProFlayCommandLoader()
     {
@@ -26,7 +26,7 @@ public class ProFlayCommandLoader
 
     public boolean register(String name, ProFlayCommand command)
     {
-        if (ProOfLay.getRoot().isEnableProFlay())
+        if (ProOfLay.isEnableProFlay())
         {
             Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "[ProFlay] You trying to register command after loading server " + name);
             Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "[ProFlay] If you load your plugin after. Change after on before in your plugin.yml.");
@@ -45,7 +45,7 @@ public class ProFlayCommandLoader
         }
     }
 
-    public ProFlayCommand getProFlayCommand(@NotNull String name)
+    public static ProFlayCommand getProFlayCommand(@NotNull String name)
     {
         return list.get(name);
     }

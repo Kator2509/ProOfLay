@@ -4,11 +4,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.graphic.CConstructor.modul.ConfigurationLoader;
+import org.graphic.test.modul.ProFlayCommandListener;
+import org.graphic.test.modul.ProFlayCommandLoader;
 
 public final class ProOfLay extends JavaPlugin
 {
-    private static ProOfLay root;
-    private boolean enable = false;
+    private ProFlayCommandLoader cmd;
+    private static boolean enable = false;
 
     @Override
     public void onEnable()
@@ -16,7 +18,8 @@ public final class ProOfLay extends JavaPlugin
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "[ProFlay] Trying to load a Configuration module.");
         ConfigurationLoader.registerPoLConfigs(this);
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "[ProFlay] Trying to load a Command module.");
-
+        cmd = new ProFlayCommandLoader();
+        this.getServer().getPluginCommand("test").setExecutor(new ProFlayCommandListener());
         enable = true;
     }
 
@@ -26,12 +29,8 @@ public final class ProOfLay extends JavaPlugin
         enable = false;
     }
 
-    public static ProOfLay getRoot() {
-        return root;
-    }
-
-    public boolean isEnableProFlay()
+    public static boolean isEnableProFlay()
     {
-        return this.enable;
+        return enable;
     }
 }
