@@ -4,7 +4,7 @@ main: org.graphic.ProOfLay
 prefix: ProFlay
 api-version: '1.20'
 load: STARTUP
-authors: [KyMbIC_RU, Heya_lost]
+authors: [KyMbIC_RU, Heya_lost, ponfertato, Potato Energy]
 commands:
   test:
     description: test
