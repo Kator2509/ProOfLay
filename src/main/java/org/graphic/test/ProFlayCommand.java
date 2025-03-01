@@ -9,7 +9,7 @@ import java.util.List;
 
 public abstract class ProFlayCommand
 {
-    protected String permission, usage, label, name;
+    protected String permission, usage, label, name, description;
     protected List<String> alias;
 
     public ProFlayCommand()
@@ -24,15 +24,15 @@ public abstract class ProFlayCommand
     {
         this.name = name;
         this.label = label;
-        this.usage = "/" + label;
+        this.usage = "/" + label + " " + (description != null ? description : null);
         this.alias = new ArrayList<>(Arrays.asList(alias));
     }
 
-    public abstract boolean run(@NotNull CommandSender sender, @NotNull String label, @NotNull String usage, @NotNull String[] args);
+    public abstract boolean run(@NotNull CommandSender sender, @NotNull String[] args);
 
-    public boolean registerAlias()
+    public String getPermissionName()
     {
-        return false;
+        return this.permission;
     }
 
     public String getName()

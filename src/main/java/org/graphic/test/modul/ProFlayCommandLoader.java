@@ -12,11 +12,13 @@ import java.util.Map;
 
 public class ProFlayCommandLoader
 {
-    static Map<String, ProFlayCommand> list = new HashMap<String, ProFlayCommand>();
+    protected static Map<String, ProFlayCommand> commandMap = new HashMap<String, ProFlayCommand>();
+    private static boolean moduleIsEnable = false;
 
     public ProFlayCommandLoader()
     {
         registerDefaultCommands();
+        moduleIsEnable = true;
     }
 
     public void registerDefaultCommands()
@@ -24,29 +26,38 @@ public class ProFlayCommandLoader
         register("test", new TestCommand());
     }
 
-    public boolean register(String name, ProFlayCommand command)
+    public static boolean register(@NotNull String name, @NotNull ProFlayCommand command)
     {
-        if (ProOfLay.isEnableProFlay())
+        if (!moduleIsEnable)
         {
             Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "[ProFlay] You trying to register command after loading server " + name);
             Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "[ProFlay] If you load your plugin after. Change after on before in your plugin.yml.");
             return false;
         }
 
-        if(list.containsKey(name) || list.containsValue(command))
+        if(isRegistered(command))
         {
             Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "[ProFlay] This " + command.getName() + " already registered in system.");
             return false;
         }
         else
         {
-            list.put(command.getLabel(), command);
+            commandMap.put(command.getLabel(), command);
             return true;
         }
     }
 
+    public static boolean isRegistered(@NotNull ProFlayCommand command)
+    {
+        if(commandMap.containsValue(command))
+        {
+            return true;
+        }
+        return false;
+    }
+
     public static ProFlayCommand getProFlayCommand(@NotNull String name)
     {
-        return list.get(name);
+        return commandMap.get(name);
     }
 }
