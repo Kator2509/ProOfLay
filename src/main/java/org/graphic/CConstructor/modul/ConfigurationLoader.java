@@ -44,10 +44,10 @@ public class ConfigurationLoader
         return false;
     }
 
+    /* You don't need to load this method. ProFlay automatically load this.
+     * There a simple method to register your config in system.*/
     public static void registerProFlayConfigs(@NotNull Plugin plugin)
     {
-        /* You don't need to load this method. ProFlay automatically load this.
-        * There a simple method to register your config in system.*/
         register("TEST", plugin, "test.yml", "plugins/test/test.yml");
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "[ProFlay] Configuration module loaded.");
     }
