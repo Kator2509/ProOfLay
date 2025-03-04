@@ -1,29 +1,23 @@
 package org.graphic.test.modul;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
+import org.graphic.test.ProFlayCommandMap;
 import org.jetbrains.annotations.NotNull;
 
-public class ProFlayCommandListener extends ProFlayCommandLoader implements CommandExecutor {
+public class ProFlayCommandListener extends ProFlayCommandLoader implements Listener {
+    private final ProFlayCommandMap commandMap;
 
     public ProFlayCommandListener()
     {
-        super();
+        this.commandMap = null;
     }
 
-    @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if(!this.list.containsKey(label))
-        {
-            return false;
-        }
-
-        if(this.list.containsKey(label) && getProFlayCommand(label) != null)
-        {
-            getProFlayCommand(label).run(commandSender, label, "/" + label, args);
-        }
-
-        return false;
+    public ProFlayCommandListener(@NotNull Plugin plugin)
+    {
+        super(plugin);
+        this.commandMap = new ProFlayCommandMap(plugin);
     }
+
+    
 }

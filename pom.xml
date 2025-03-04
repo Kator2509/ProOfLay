@@ -66,7 +66,8 @@
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
-                    <outputDirectory>/IntellIj IDEA/Spigot1201/plugins</outputDirectory>
+                    <finalName>ProFlay-1.9</finalName>
+                    <outputDirectory>C:\Users\kirill\Desktop\Test Server1201\plugins</outputDirectory>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>

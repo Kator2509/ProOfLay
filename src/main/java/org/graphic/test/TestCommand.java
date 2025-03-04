@@ -10,10 +10,11 @@ public class TestCommand extends ProFlayCommand
     {
         super("test", "test", new String[]{"test1, test2"});
         this.permission = "test.command";
+        this.description = "test command.";
     }
 
     @Override
-    public boolean run(@NotNull CommandSender sender, @NotNull String label, @NotNull String usage, @NotNull String[] args) {
+    public boolean run(@NotNull CommandSender sender, @NotNull String[] args) {
         Bukkit.getServer().getConsoleSender().sendMessage("TEST PASSED");
         return false;
     }
