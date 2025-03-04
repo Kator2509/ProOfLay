@@ -2,7 +2,7 @@ package org.graphic.test.modul;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.graphic.ProOfLay;
+import org.bukkit.plugin.Plugin;
 import org.graphic.test.ProFlayCommand;
 import org.graphic.test.TestCommand;
 import org.jetbrains.annotations.NotNull;
@@ -13,20 +13,22 @@ import java.util.Map;
 public class ProFlayCommandLoader
 {
     protected static Map<String, ProFlayCommand> commandMap = new HashMap<String, ProFlayCommand>();
-    private static boolean moduleIsEnable = false;
+    private boolean moduleIsEnable = false;
 
-    public ProFlayCommandLoader()
+    public ProFlayCommandLoader() {}
+
+    public ProFlayCommandLoader(@NotNull Plugin plugin)
     {
-        registerDefaultCommands();
-        moduleIsEnable = true;
+        this.registerDefaultCommands();
+        this.moduleIsEnable = true;
     }
 
     public void registerDefaultCommands()
     {
-        register("test", new TestCommand());
+        this.register("test", new TestCommand());
     }
 
-    public static boolean register(@NotNull String name, @NotNull ProFlayCommand command)
+    public boolean register(@NotNull String name, @NotNull ProFlayCommand command)
     {
         if (!moduleIsEnable)
         {
@@ -47,7 +49,7 @@ public class ProFlayCommandLoader
         }
     }
 
-    public static boolean isRegistered(@NotNull ProFlayCommand command)
+    public boolean isRegistered(@NotNull ProFlayCommand command)
     {
         if(commandMap.containsValue(command))
         {
@@ -56,7 +58,7 @@ public class ProFlayCommandLoader
         return false;
     }
 
-    public static ProFlayCommand getProFlayCommand(@NotNull String name)
+    public ProFlayCommand getProFlayCommand(@NotNull String name)
     {
         return commandMap.get(name);
     }

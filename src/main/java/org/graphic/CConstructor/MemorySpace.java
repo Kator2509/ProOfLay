@@ -8,14 +8,14 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 
 public abstract class MemorySpace implements MemoryInterface
 {
     private final Yaml yaml = new Yaml();
     protected FileInputStream fileInputStream;
-    private LinkedHashMap<String, Object> data;
+    private HashMap<String, Object> data;
     private String pathFile;
     public MemorySpace()
     {
@@ -75,7 +75,7 @@ public abstract class MemorySpace implements MemoryInterface
         int i = 1;
         if(getRequest(path).length > 1) {
             do {
-                var2 = ((LinkedHashMap<String, Object>) var1).get(getRequest(path)[i]);
+                var2 = ((HashMap<String, Object>) var1).get(getRequest(path)[i]);
                 var1 = var2;
                 i++;
             } while (i < getRequest(path).length);
@@ -151,11 +151,11 @@ public abstract class MemorySpace implements MemoryInterface
         Object var1 = this.data.get(getRequest(path)[0]), var2;
         int i = 1;
         do {
-            var2 = ((LinkedHashMap<String, Object>) var1).get(getRequest(path)[i]);
+            var2 = ((HashMap<String, Object>) var1).get(getRequest(path)[i]);
             var1 = var2;
             i++;
         } while (i < getRequest(path).length);
-        return ((LinkedHashMap<String, Object>) var2).keySet().stream().toList();
+        return ((HashMap<String, Object>) var2).keySet().stream().toList();
     }
 
     @Override

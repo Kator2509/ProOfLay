@@ -12,42 +12,22 @@ import java.util.Map;
 
 public class ConfigurationLoader
 {
-    protected static final Map<String, Configuration> configs = new HashMap<String, Configuration>();
-    protected static boolean moduleIsEnable = false;
+    private static final Map<String, Configuration> configs = new HashMap<String, Configuration>();
 
-    /*You can create your instance of this object.*/
-    public ConfigurationLoader(@NotNull Plugin plugin)
-    {
-        registerProFlayConfigs(plugin);
-        moduleIsEnable = true;
-    }
-
-    /*К*/
-    public static boolean register(@NotNull String name, @NotNull Plugin plugin, @NotNull String resourcePath, @NotNull String outPath)
+    public static void register(@NotNull String name, @NotNull Plugin plugin, @NotNull String resourcePath, @NotNull String outPath)
     {
         Preconditions.checkArgument(resourcePath != null, ChatColor.AQUA + "[ProFlay] resourcePath is null: " + resourcePath + " You need load from your resources plugin.");
         Preconditions.checkArgument(name != null, ChatColor.AQUA + "[ProFlay] Name configuration is null. That can be cause a problem: " + name);
-        if(!isRegistered(new Configuration(plugin, resourcePath, outPath)) && !moduleIsEnable)
+        if(!configs.containsValue(name))
         {
             configs.put(name, new Configuration(plugin, resourcePath, outPath));
-            return true;
         }
-        return false;
     }
 
-    public static boolean isRegistered(@NotNull Configuration configuration)
+    public static void registerPoLConfigs(@NotNull Plugin plugin)
     {
-        if(configs.containsValue(configuration))
-        {
-            return true;
-        }
-        return false;
-    }
-
-    /* You don't need to load this method. ProFlay automatically load this.
-     * There a simple method to register your config in system.*/
-    public static void registerProFlayConfigs(@NotNull Plugin plugin)
-    {
+        /*
+        * You don't need to load this method. ProFlay automatically load this.*/
         register("TEST", plugin, "test.yml", "plugins/test/test.yml");
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "[ProFlay] Configuration module loaded.");
     }
