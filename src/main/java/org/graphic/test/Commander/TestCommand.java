@@ -1,4 +1,4 @@
-package org.graphic.test;
+package org.graphic.test.Commander;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -14,8 +14,14 @@ public class TestCommand extends ProFlayCommand
     }
 
     @Override
+    public boolean consoleRun(@NotNull String[] args) {
+        Bukkit.getConsoleSender().sendMessage("CONSOLE PASSED");
+        return true;
+    }
+
+    @Override
     public boolean run(@NotNull CommandSender sender, @NotNull String[] args) {
         Bukkit.getServer().getConsoleSender().sendMessage("TEST PASSED");
-        return false;
+        return true;
     }
 }

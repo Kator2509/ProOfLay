@@ -1,23 +1,23 @@
-package org.graphic.test.modul;
+package org.graphic.test.Commander.modul;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
-import org.graphic.test.ProFlayCommand;
-import org.graphic.test.TestCommand;
+import org.graphic.test.Commander.ProFlayCommand;
+import org.graphic.test.Commander.TestCommand;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class ProFlayCommandLoader
+public class ProFlayCommandListener
 {
     protected static Map<String, ProFlayCommand> commandMap = new HashMap<String, ProFlayCommand>();
     private boolean moduleIsEnable = false;
 
-    public ProFlayCommandLoader() {}
+    public ProFlayCommandListener() {}
 
-    public ProFlayCommandLoader(@NotNull Plugin plugin)
+    public ProFlayCommandListener(@NotNull Plugin plugin)
     {
         this.registerDefaultCommands();
         this.moduleIsEnable = true;
@@ -25,14 +25,14 @@ public class ProFlayCommandLoader
 
     public void registerDefaultCommands()
     {
-        this.register("test", new TestCommand());
+        this.register(new TestCommand());
     }
 
-    public boolean register(@NotNull String name, @NotNull ProFlayCommand command)
+    public boolean register(@NotNull ProFlayCommand command)
     {
-        if (!moduleIsEnable)
+        if (moduleIsEnable)
         {
-            Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "[ProFlay] You trying to register command after loading server " + name);
+            Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "[ProFlay] You trying to register command after loading server - " + command.getLabel());
             Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "[ProFlay] If you load your plugin after. Change after on before in your plugin.yml.");
             return false;
         }
@@ -44,6 +44,7 @@ public class ProFlayCommandLoader
         }
         else
         {
+            System.out.println(command);
             commandMap.put(command.getLabel(), command);
             return true;
         }
@@ -51,11 +52,7 @@ public class ProFlayCommandLoader
 
     public boolean isRegistered(@NotNull ProFlayCommand command)
     {
-        if(commandMap.containsValue(command))
-        {
-            return true;
-        }
-        return false;
+        return commandMap.containsValue(command);
     }
 
     public ProFlayCommand getProFlayCommand(@NotNull String name)

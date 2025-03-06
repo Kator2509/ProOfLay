@@ -1,4 +1,4 @@
-package org.graphic.test;
+package org.graphic.test.Commander;
 
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -24,13 +24,15 @@ public abstract class ProFlayCommand
     {
         this.name = name;
         this.label = label;
-        this.usage = "/" + label + " " + (description != null ? description : null);
+        this.usage = "/" + label + " " + (description != null ? description : "");
         this.alias = new ArrayList<>(Arrays.asList(alias));
     }
 
+    public abstract boolean consoleRun(@NotNull String[] args);
+
     public abstract boolean run(@NotNull CommandSender sender, @NotNull String[] args);
 
-    public String getPermissionName()
+    public String getPermission()
     {
         return this.permission;
     }

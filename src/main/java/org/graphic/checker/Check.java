@@ -1,6 +1,7 @@
 package org.graphic.checker;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 
 public class Check implements CheckerInterface
@@ -9,8 +10,9 @@ public class Check implements CheckerInterface
     {
         try {
             return Bukkit.getServicesManager().getRegistration(Class.forName(name + ".class")) != null;
-        } catch (NoClassDefFoundError | ClassNotFoundException e)
+        } catch (Throwable e)
         {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "[ProFlay] Out of API - " + name);
             return false;
         }
     }

@@ -18,13 +18,13 @@ public class ConfigurationLoader
     {
         Preconditions.checkArgument(resourcePath != null, ChatColor.AQUA + "[ProFlay] resourcePath is null: " + resourcePath + " You need load from your resources plugin.");
         Preconditions.checkArgument(name != null, ChatColor.AQUA + "[ProFlay] Name configuration is null. That can be cause a problem: " + name);
-        if(!configs.containsValue(name))
+        if(!configs.containsValue(new Configuration(plugin, resourcePath, outPath)))
         {
             configs.put(name, new Configuration(plugin, resourcePath, outPath));
         }
     }
 
-    public static void registerPoLConfigs(@NotNull Plugin plugin)
+    public static void registerProFlayConfigs(@NotNull Plugin plugin)
     {
         /*
         * You don't need to load this method. ProFlay automatically load this.*/
