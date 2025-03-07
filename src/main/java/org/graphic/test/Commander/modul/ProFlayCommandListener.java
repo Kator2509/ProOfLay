@@ -13,22 +13,35 @@ import java.util.Map;
 public class ProFlayCommandListener
 {
     protected static Map<String, ProFlayCommand> commandMap = new HashMap<String, ProFlayCommand>();
-    private boolean moduleIsEnable = false;
+    private static boolean moduleIsEnable = false;
 
     public ProFlayCommandListener() {}
 
+    /*Конструктор листенера команд.*/
     public ProFlayCommandListener(@NotNull Plugin plugin)
     {
         this.registerDefaultCommands();
-        this.moduleIsEnable = true;
+        moduleIsEnable = true;
     }
 
+    /*Метод регистрации дефолтных команд системы.
+    * Можно перезаписать их и внести собственную логику, если вызвать register(ProFlayCommand command, String name).*/
     public void registerDefaultCommands()
     {
-        this.register(new TestCommand());
+        if
+        (!(
+                this.register(new TestCommand(), false)
+        ))
+        {
+            Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "[ProFlay] Default command not load.");
+        }
     }
 
-    public boolean register(@NotNull ProFlayCommand command)
+    /*Метод регистрации внутри системы и проверка на запущенный модуль.
+    * Если модуль запущен moduleIsEnable = true, то остановка регистрации и лог сообщение.
+    * Если команда зарегистрирована isRegistered = true, то остановка регистрации и лог сообщение.
+    * Если ни одно условие не выполняется, то команда регистрируется в системе для последующей его вызова.*/
+    public boolean register(@NotNull ProFlayCommand command, boolean override)
     {
         if (moduleIsEnable)
         {
@@ -42,19 +55,18 @@ public class ProFlayCommandListener
             Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "[ProFlay] This " + command.getName() + " already registered in system.");
             return false;
         }
-        else
-        {
-            System.out.println(command);
-            commandMap.put(command.getLabel(), command);
-            return true;
-        }
+
+        commandMap.put(command.getLabel(), command);
+        return true;
     }
 
+    /*Производит проверка на наличие команды.*/
     public boolean isRegistered(@NotNull ProFlayCommand command)
     {
         return commandMap.containsValue(command);
     }
 
+    /*Получить определенную команду.*/
     public ProFlayCommand getProFlayCommand(@NotNull String name)
     {
         return commandMap.get(name);
