@@ -20,7 +20,7 @@ public final class ProOfLay extends JavaPlugin
         * предоставляя более расширенный функционал. Он вытягивает через прямой поток из самого конфигурации,
         * вместо того, чтобы хранить конфигурации и хранит лишь только путь к конфигурационному файлу.*/
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "[ProFlay] Trying to load a Configuration module.");
-        ConfigurationLoader.registerProFlayConfigs(this);
+        ConfigurationLoader.registerDefaults(this);
 
         /*Командный загрузчик, чья задача через CommandExecutor загружать все команды используя
         * собственный командное представление - ProFlayCommand.*/

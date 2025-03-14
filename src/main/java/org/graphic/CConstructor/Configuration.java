@@ -1,100 +1,51 @@
 package org.graphic.CConstructor;
 
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
-import java.net.URLConnection;
+import org.bukkit.plugin.Plugin;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
-public class Configuration extends MemorySpace implements ConfigInterface
-{
-    protected Plugin plugin;
-    private String resourcePath, outPath, pathDir;
+public class Configuration extends MemorySpace implements ConfigInterface {
+    private final Plugin plugin;
+    private final String resourcePath;
+    private boolean initialized = false;
 
-    public Configuration()
-    {
-        this.plugin = null;
-        this.resourcePath = null;
-        this.outPath = null;
-        /*
-         * This constructor extends MemorySpace and use there method. Implements ConfigInterface.
-         * You can use Interface for create your methods and logic.
-         *
-         * plugin is empty. Need create access to your main Plugin class or call this constructor in main class.
-         * createConfig is empty. Need to change a resourcePath for create and call a method.
-         * setData is empty. You can fill this parm or don't change him. Default system create a config in plugins/<pluginName>/resourcePath
-         * */
-    }
-
-    public Configuration(@NotNull Plugin plugin, @NotNull String resourcePath, @NotNull String outPath)
-    {
-        super(outPath);
+    public Configuration(
+            @NotNull Plugin plugin, // Теперь аннотация распознается
+            @NotNull String resourcePath,
+            @NotNull Path outputPath
+    ) throws ConfigurationException {
+        super(outputPath);
         this.plugin = plugin;
         this.resourcePath = resourcePath;
-        this.outPath = (outPath != null ? outPath : "plugins/" + plugin.getName() + "/" + resourcePath);
-        this.pathDir = (outPath.substring(0, outPath.lastIndexOf(47) >= 0 ? outPath.lastIndexOf(47) : 0));
-        createConfig(false);
-        setData();
-    }
-
-    public String getConfigPath()
-    {
-        return this.outPath;
+        initialize(false);
     }
 
     @Override
-    public void createConfig(@NotNull boolean reset) {
-        if(this.isExistsConfig() || reset) {
-            URLConnection con = this.getURLConnection();
-            if (con != null) {
-                con.setUseCaches(false);
-                InputStream var = this.getInputStream(con);
-                if (!new File(this.pathDir).exists()) {
-                    new File(this.pathDir).mkdirs();
-                }
-                try {
-                    OutputStream var3 = new FileOutputStream(this.outPath);
-                    int len;
-                    byte[] var2 = new byte[1024];
-
-                    while ((len = var.read(var2)) > 0) {
-                        var3.write(var2, 0, len);
+    public void initialize(boolean forceReset) throws ConfigurationException {
+        try {
+            if (forceReset || !Files.exists(configPath)) {
+                Files.createDirectories(configPath.getParent());
+                try (InputStream is = plugin.getResource(resourcePath)) {
+                    if (is == null) {
+                        throw new ConfigurationException("Resource not found: " + resourcePath);
                     }
-
-                    var3.close();
-                    var.close();
-                } catch (IOException ignored) {
+                    Files.copy(is, configPath, StandardCopyOption.REPLACE_EXISTING);
                 }
             }
+            loadData();
+            initialized = true;
+        } catch (IOException e) {
+            throw new ConfigurationException("Initialization failed", e);
         }
     }
 
     @Override
-    public boolean isExistsConfig() {
-        if(!new File(this.outPath).exists())
-        {
-            return true;
-        }
-        return false;
-    }
-
-    protected InputStream getInputStream(URLConnection urlConnection) {
-        try {
-            return urlConnection.getInputStream();
-        } catch (IOException e) {
-            return null;
-        }
-    }
-
-    protected ClassLoader getClassLoader() {
-        return this.plugin.getClass().getProtectionDomain().getClassLoader();
-    }
-
-    protected URLConnection getURLConnection() {
-        try {
-            return getClassLoader().getResource(this.resourcePath).openConnection();
-        } catch (IOException e) {
-            return null;
-        }
+    public boolean isInitialized() {
+        return initialized;
     }
 }

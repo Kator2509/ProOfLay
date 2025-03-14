@@ -1,165 +1,107 @@
 package org.graphic.CConstructor;
 
-import com.google.common.base.Preconditions;
-import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.error.YAMLException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.HashMap;
-import java.util.List;
+public abstract class MemorySpace implements MemoryInterface {
+    protected final Yaml yaml = new Yaml();
+    protected Path configPath;
+    protected Map<String, Object> data;
 
-public abstract class MemorySpace implements MemoryInterface
-{
-    private final Yaml yaml = new Yaml();
-    protected FileInputStream fileInputStream;
-    private HashMap<String, Object> data;
-    private String pathFile;
-    public MemorySpace()
-    {
-        this.pathFile = null;
-    }
-
-    public MemorySpace(@NotNull String pathFile)
-    {
-        this.pathFile = pathFile;
+    protected MemorySpace(@NotNull Path configPath) {
+        this.configPath = configPath;
     }
 
     @Override
-    public void setData()
-    {
-        try {
-            this.fileInputStream = new FileInputStream(this.pathFile);
-            this.data = yaml.load(this.fileInputStream);
-        } catch (FileNotFoundException e)
-        {
-            System.out.println(ChatColor.AQUA + "[ProFlay] - Can't found the file. Check path to file: " + this.pathFile);
+    public void loadData() throws ConfigurationException {
+        try (InputStream is = Files.newInputStream(configPath)) {
+            data = yaml.load(is);
+        } catch (IOException | YAMLException e) {
+            throw new ConfigurationException("Failed to load config: " + configPath, e);
         }
     }
 
     @Override
-    public void setData(@NotNull String pathFile) {
-        try{
-            this.fileInputStream = new FileInputStream(pathFile);
-            this.data = yaml.load(this.fileInputStream);
-            Preconditions.checkArgument(pathFile != null, "[ProOfLay] You change pathFile on null. That can cause a problem.");
-        } catch (FileNotFoundException e)
-        {
-            System.out.println(ChatColor.AQUA + "[ProOfLay] Can't found tha file. Path to file may be path have illegal argument: " + pathFile);
+    public void loadData(@NotNull String path) throws ConfigurationException {
+        this.configPath = Path.of(path);
+        loadData();
+    }
+
+    @Override
+    public void reloadData() throws ConfigurationException {
+        loadData();
+    }
+
+    private Object navigatePath(String path) throws ConfigurationException {
+        String[] parts = path.split("\\.");
+        Map<String, Object> current = data;
+
+        for (int i = 0; i < parts.length - 1; i++) {
+            Object node = current.get(parts[i]);
+            if (!(node instanceof Map)) {
+                throw new ConfigurationException("Invalid path segment: " + parts[i]);
+            }
+            current = (Map<String, Object>) node;
         }
+        return current.get(parts[parts.length - 1]);
     }
 
     @Override
-    public void resetData()
-    {
-        try {
-            this.fileInputStream = new FileInputStream(this.pathFile);
-            this.data = yaml.load(this.fileInputStream);
-        } catch (FileNotFoundException e)
-        {
-            System.out.println(ChatColor.AQUA + "[ProFlay] Can't found the file. Maybe file migrate: " + this.pathFile);
+    public <T> T get(@NotNull String path, Class<T> type) throws ConfigurationException {
+        Object value = navigatePath(path);
+        if (value == null) {
+            throw new ConfigurationException("Path not found: " + path);
         }
-    }
-
-    private String[] getRequest(@NotNull String path)
-    {
-        return path.split("\\.");
-    }
-
-    @Override
-    public Object getObject(@NotNull String path) {
-        Preconditions.checkArgument(this.data != null, ChatColor.AQUA + "[ProFlay] Data is null. Use setData or resetData. Check register of configuration: " + this.pathFile);
-        Object var1 = this.data.get(getRequest(path)[0]), var2 = null;
-        int i = 1;
-        if(getRequest(path).length > 1) {
-            do {
-                var2 = ((HashMap<String, Object>) var1).get(getRequest(path)[i]);
-                var1 = var2;
-                i++;
-            } while (i < getRequest(path).length);
+        if (!type.isInstance(value)) {
+            throw new ConfigurationException("Type mismatch for path: " + path);
         }
-        Preconditions.checkArgument(var2 != null || var1 != null, ChatColor.AQUA + "[ProFlay] Argument is null. Check your path or config: " + path);
-        return getRequest(path).length > 1 ? var2 : var1;
+        return type.cast(value);
     }
 
     @Override
-    public List<Object> getObjectsArray(@NotNull String path) {
-        return ((List<Object>) getObject(path));
+    public <T> List<T> getList(@NotNull String path, Class<T> type) throws ConfigurationException {
+        Object value = navigatePath(path);
+        if (!(value instanceof List)) {
+            throw new ConfigurationException("Path is not a list: " + path);
+        }
+
+        List<?> rawList = (List<?>) value;
+        List<T> result = new ArrayList<>();
+        for (Object item : rawList) {
+            if (!type.isInstance(item)) {
+                throw new ConfigurationException("List type mismatch at path: " + path);
+            }
+            result.add(type.cast(item));
+        }
+        return result;
     }
 
     @Override
-    public String getKeySet() {
-        return null;
+    public List<String> getKeys(@Nullable String path) throws ConfigurationException {
+        if (path == null || path.isEmpty()) {
+            return new ArrayList<>(data.keySet());
+        }
+
+        Object node = navigatePath(path);
+        if (!(node instanceof Map)) {
+            throw new ConfigurationException("Path is not a section: " + path);
+        }
+        return new ArrayList<>(((Map<?, ?>) node).keySet().stream()
+                .map(Object::toString)
+                .toList());
     }
 
     @Override
-    public String getString(@NotNull String path) {
-        return (String) getObject(path);
-    }
-
-    @Override
-    public List<String> getStringArray(@NotNull String path) {
-        return (List<String>) getObject(path);
-    }
-
-    @Override
-    public Character getCharacter(@NotNull String path) {
-        Preconditions.checkArgument(getObject(path).toString().length() > 1, ChatColor.AQUA + "[ProFlay] getCharacter detect a illegal request: " + path);
-        Preconditions.checkArgument(getObject(path).toString().length() > 1, ChatColor.AQUA + "[ProFlay] Illegal object: " + getObject(path).toString());
-        return (Character) (getObject(path).toString().length() <= 1 ? getObject(path).toString().charAt(0) : null);
-    }
-
-    @Override
-    public List<Character> getCharacterArray(@NotNull String path) {
-        return (List<Character>) getObject(path);
-    }
-
-    @Override
-    public Boolean getBoolean(@NotNull String path) {
-        return (Boolean) getObject(path);
-    }
-
-    @Override
-    public List<Boolean> getBooleanArray(@NotNull String path) {
-        return (List<Boolean>) getObject(path);
-    }
-
-    @Override
-    public Integer getInteger(@NotNull String path) {
-        return (Integer) getObject(path);
-    }
-
-    @Override
-    public List<Integer> getIntegerArray(@NotNull String path) {
-        return (List<Integer>) getObject(path);
-    }
-
-    @Override
-    public Double getDouble(@NotNull String path) {
-        return (Double) getObject(path);
-    }
-
-    @Override
-    public List<Double> getDoubleArray(@NotNull String path) {
-        return (List<Double>) getObject(path);
-    }
-
-    @Override
-    public List<String> getKeySet(@Nullable String path) {
-        Object var1 = this.data.get(getRequest(path)[0]), var2;
-        int i = 1;
-        do {
-            var2 = ((HashMap<String, Object>) var1).get(getRequest(path)[i]);
-            var1 = var2;
-            i++;
-        } while (i < getRequest(path).length);
-        return ((HashMap<String, Object>) var2).keySet().stream().toList();
-    }
-
-    @Override
-    public void setKey(@NotNull String path, String argument) {
-
+    public void set(@NotNull String path, @Nullable Object value) throws ConfigurationException {
+        // Реализация записи данных
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 }
