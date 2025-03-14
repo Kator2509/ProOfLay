@@ -13,7 +13,7 @@ public class ProFlayCommandLoader extends ProFlayCommandListener {
 
     public static boolean override(@NotNull Plugin plugin) {
         ProFlayCommandTransfer transfer = new ProFlayCommandTransfer(plugin);
-        for(Map.Entry<String, ProFlayCommand> entry : commandMap.entrySet()){
+        for (Map.Entry<String, ProFlayCommand> entry : commandMap.entrySet()) {
             try {
                 plugin.getServer().getPluginCommand(entry.getKey()).setExecutor(transfer);
             } catch (Throwable e) {

@@ -2,14 +2,16 @@ package org.graphic.CConstructor;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.YAMLException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public abstract class MemorySpace implements MemoryInterface {
     protected final Yaml yaml = new Yaml();
@@ -69,11 +71,10 @@ public abstract class MemorySpace implements MemoryInterface {
     @Override
     public <T> List<T> getList(@NotNull String path, Class<T> type) throws ConfigurationException {
         Object value = navigatePath(path);
-        if (!(value instanceof List)) {
+        if (!(value instanceof List<?> rawList)) {
             throw new ConfigurationException("Path is not a list: " + path);
         }
 
-        List<?> rawList = (List<?>) value;
         List<T> result = new ArrayList<>();
         for (Object item : rawList) {
             if (!type.isInstance(item)) {

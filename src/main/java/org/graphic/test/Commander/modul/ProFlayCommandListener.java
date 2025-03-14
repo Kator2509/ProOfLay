@@ -21,7 +21,8 @@ public class ProFlayCommandListener {
     }
 
     // Дефолтный конструктор
-    public ProFlayCommandListener() {}
+    public ProFlayCommandListener() {
+    }
 
     public void registerDefaultCommands() {
         if (!this.register(new TestCommand(), false)) {

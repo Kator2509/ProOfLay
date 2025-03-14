@@ -1,14 +1,13 @@
 package org.graphic.CConstructor.modul;
 
-import org.jetbrains.annotations.NotNull;
-
-import org.graphic.CConstructor.ConfigurationException;
-
 import org.bukkit.plugin.Plugin;
 import org.graphic.CConstructor.Configuration;
+import org.graphic.CConstructor.ConfigurationException;
+import org.jetbrains.annotations.NotNull;
+
 import java.nio.file.Path;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ConfigurationLoader {
     private static final Map<String, Configuration> CONFIGS = new ConcurrentHashMap<>();
