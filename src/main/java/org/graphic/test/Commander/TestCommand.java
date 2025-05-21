@@ -4,10 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
-public class TestCommand extends ProFlayCommand
-{
-    public TestCommand()
-    {
+public class TestCommand extends ProFlayCommand {
+    public TestCommand() {
         super("test", "test", new String[]{"test1, test2"});
         this.permission = "test.command";
         this.description = "test command.";

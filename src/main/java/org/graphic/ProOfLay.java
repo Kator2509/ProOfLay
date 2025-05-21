@@ -7,26 +7,37 @@ import org.graphic.CConstructor.modul.ConfigurationLoader;
 import org.graphic.test.Commander.modul.ProFlayCommandListener;
 import org.graphic.test.Commander.modul.ProFlayCommandLoader;
 
-public final class ProOfLay extends JavaPlugin
-{
-    private ProFlayCommandListener cmd;
+public final class ProOfLay extends JavaPlugin {
     private static ProOfLay root;
     private static boolean enable = false;
+    private ProFlayCommandListener cmd;
+
+    /*Получение root.*/
+    public static ProOfLay getInstance() {
+        if (!enable) {
+            return root;
+        } else {
+            return null;
+        }
+    }
+
+    /*Запущен ли плагин.*/
+    public static boolean isEnableProFlay() {
+        return enable;
+    }
 
     @Override
-    public void onEnable()
-    {
+    public void onEnable() {
         /*Конфигурационный загрузчик, чья задача создавать собственные конфигурации,
-        * предоставляя более расширенный функционал. Он вытягивает через прямой поток из самого конфигурации,
-        * вместо того, чтобы хранить конфигурации и хранит лишь только путь к конфигурационному файлу.*/
+         * предоставляя более расширенный функционал. Он вытягивает через прямой поток из самого конфигурации,
+         * вместо того, чтобы хранить конфигурации и хранит лишь только путь к конфигурационному файлу.*/
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "[ProFlay] Trying to load a Configuration module.");
-        ConfigurationLoader.registerProFlayConfigs(this);
+        ConfigurationLoader.registerDefaults(this);
 
         /*Командный загрузчик, чья задача через CommandExecutor загружать все команды используя
-        * собственный командное представление - ProFlayCommand.*/
+         * собственный командное представление - ProFlayCommand.*/
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "[ProFlay] Trying to load a Command module.");
-        if(!ProFlayCommandLoader.override(this))
-        {
+        if (!ProFlayCommandLoader.override(this)) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "[ProFlay] Problem with Command module.");
         }
 
@@ -35,26 +46,7 @@ public final class ProOfLay extends JavaPlugin
     }
 
     @Override
-    public void onDisable()
-    {
+    public void onDisable() {
         enable = false;
-    }
-
-    /*Получение root.*/
-    public static ProOfLay getInstance()
-    {
-        if(!enable) {
-            return root;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    /*Запущен ли плагин.*/
-    public static boolean isEnableProFlay()
-    {
-        return enable;
     }
 }

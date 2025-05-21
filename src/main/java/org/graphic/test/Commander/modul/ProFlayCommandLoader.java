@@ -8,21 +8,17 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public class ProFlayCommandLoader extends ProFlayCommandListener
-{
+public class ProFlayCommandLoader extends ProFlayCommandListener {
     private static boolean load = true;
 
-    /*Регистрация методов системы в CommandExecutor.*/
-    public static boolean override(@NotNull Plugin plugin)
-    {
-        new ProFlayCommandTransfer(plugin);
-        for(Map.Entry<String, ProFlayCommand> var2 : commandMap.entrySet()){
+    public static boolean override(@NotNull Plugin plugin) {
+        ProFlayCommandTransfer transfer = new ProFlayCommandTransfer(plugin);
+        for (Map.Entry<String, ProFlayCommand> entry : commandMap.entrySet()) {
             try {
-                plugin.getServer().getPluginCommand(var2.getValue().getLabel()).setExecutor(new ProFlayCommandTransfer(plugin));
-            } catch (Throwable e)
-            {
-                Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "[ProFlay] Don't load the command " + (var2.getKey() != null ? var2.getKey() : "")
-                        + " with error message: " + ChatColor.RED + e.getMessage());
+                plugin.getServer().getPluginCommand(entry.getKey()).setExecutor(transfer);
+            } catch (Throwable e) {
+                Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "[ProFlay] Error loading command " +
+                        entry.getKey() + ": " + ChatColor.RED + e.getMessage());
                 load = false;
             }
         }

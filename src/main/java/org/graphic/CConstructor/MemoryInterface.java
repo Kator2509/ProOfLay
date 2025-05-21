@@ -5,40 +5,39 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public interface MemoryInterface
-{
-    void setData();
-    void setData(@NotNull String pathFile);
+public interface MemoryInterface {
+    void loadData() throws ConfigurationException;
 
-    void resetData();
+    void loadData(@NotNull String path) throws ConfigurationException;
 
-    String getString(@NotNull String path);
+    void reloadData() throws ConfigurationException;
 
-    List<String> getStringArray(@NotNull String path);
+    <T> T get(@NotNull String path, Class<T> type) throws ConfigurationException;
 
-    Character getCharacter(@NotNull String path);
+    <T> List<T> getList(@NotNull String path, Class<T> type) throws ConfigurationException;
 
-    List<Character> getCharacterArray(@NotNull String path);
+    default String getString(@NotNull String path) throws ConfigurationException {
+        return get(path, String.class);
+    }
 
-    Boolean getBoolean(@NotNull String path);
+    default Boolean getBoolean(@NotNull String path) throws ConfigurationException {
+        return get(path, Boolean.class);
+    }
 
-    List<Boolean> getBooleanArray(@NotNull String path);
+    default Integer getInteger(@NotNull String path) throws ConfigurationException {
+        return get(path, Integer.class);
+    }
 
-    Integer getInteger(@NotNull String path);
+    default Double getDouble(@NotNull String path) throws ConfigurationException {
+        return get(path, Double.class);
+    }
 
-    List<Integer> getIntegerArray(@NotNull String path);
+    default Character getCharacter(@NotNull String path) throws ConfigurationException {
+        String value = getString(path);
+        return (value != null && !value.isEmpty()) ? value.charAt(0) : null;
+    }
 
-    Double getDouble(@NotNull String path);
+    List<String> getKeys(@Nullable String path) throws ConfigurationException;
 
-    List<Double> getDoubleArray(@NotNull String path);
-
-    Object getObject(@NotNull String path);
-
-    List<Object> getObjectsArray(@NotNull String path);
-
-    String getKeySet();
-
-    List<String> getKeySet(@Nullable String path);
-
-    void setKey(@NotNull String path, @Nullable String argument);
+    void set(@NotNull String path, @Nullable Object value) throws ConfigurationException;
 }
